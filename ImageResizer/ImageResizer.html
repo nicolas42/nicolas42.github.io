@@ -5,11 +5,18 @@ variables: theImage
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="reset.css">
+	<link rel="stylesheet" href="reset.css">
+	<style>
+		div.fixedTopLeft {
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
+	</style>
 </head>
 <body>
 
-<p>
+<div class=fixedTopLeft>
 <!-- Buttons 
 These have hotkeys (or accesskeys) associated with them	-->
 
@@ -37,10 +44,7 @@ These have hotkeys (or accesskeys) associated with them	-->
 
 <a href="https://www.w3schools.com/tags/att_global_accesskey.asp">How to use hotkeys</a>	
 
-</p>
-
-<!-- The Actual Image we're going to be resizing -->
-<img id="theImage" width="11840" height="3780" src="IMG_0706.JPG" />
+</div>
 
 <script>
 
@@ -83,10 +87,13 @@ These have hotkeys (or accesskeys) associated with them	-->
 		fitHeight("theImage");
 	}
 
-	init()
-
 </script>
-
+	
+<!-- The Actual Image we're going to be resizing -->
+<img id="theImage" width="11840" height="3780" src="IMG_0706.JPG" />
+<script>
+	init();
+</script>
 </body>
 </html>
 
