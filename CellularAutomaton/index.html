@@ -3,6 +3,7 @@
 <head>
   <link rel="stylesheet" href="reset.css">
   <script type="text/javascript" src="rules.js"></script>
+  <script type="text/javascript" src="resize.js"></script>
   <style>
     a { color: #33aaff }
   </style>
@@ -14,7 +15,8 @@
 	<button type="button" onclick="DrawNext()">Next Image</button>
 	<button type="button" onclick="DrawPreviousInteresting()">Previous Interesting Image</button>
 	<button type="button" onclick="DrawNextInteresting()">Next Interesting Image</button>
-
+	<button type="button" onclick="fitWidth('CellularAutomaton')">Fit Width</button>
+	<button type="button" onclick="fitHeight('CellularAutomaton')">Fit Height</button>
 </p>
 <img id="CellularAutomaton" />
 </body>
