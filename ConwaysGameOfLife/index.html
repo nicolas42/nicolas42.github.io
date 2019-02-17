@@ -6,64 +6,72 @@
   <link rel="stylesheet" href="reset.css">
 </head>
 <body>
-<canvas id="canvas" width="1000" height="1000">
-<p id="console"></p>
-
+	<button onclick="playpause()">Play/Pause</button><br>
+	<!--<canvas></canvas> -->
+	<img>
 
 </body>
 <script>
 
-function gameOfLife(arg){
+// function gameOfLife(arg){
 	
-	// Defaults
-	var querySelector 	= "canvas"
-	var width 			= window.innerWidth;
-	var height 			= window.innerHeight;
-	var white 			= [255, 255, 255, 255];
-	var black 			= [0, 0, 0, 255];
-	// unset setArgs to use a giant function that can override the default parameters
-	setArgs(arg);
-
-	// Get the canvas from the document and set its width and height
-	var canvas 			= document.querySelector(querySelector);	
-	canvas.width		= width;
-	canvas.height		= height;
-	// Get the 2D drawing context from the canvas and the associated image data
-	var ctx 			= canvas.getContext("2d");
-	var imgData 		= ctx.getImageData(0, 0, width, height);
-	var data 			= imgData.data;
-
-	// These rely on the previous initialized data
-	function setArgs(arg){
-		// Get Parameters From Function Argument
+	var canvasid, width, height, deadColor, aliveColor, canvas, ctx, imgData, data, deadRGBA, aliveRGBA, arg, delay, paused, intervalID;
+	
+	function initialize(){
+		// Defaults
+		canvasid	 	= "canvas"
+		width 			= 400; //window.innerWidth;
+		height 			= 400; //window.innerHeight;
+		deadColor 		= [255, 255, 255, 255];
+		aliveColor 		= [0, 0, 255, 255];
+		delay = 20;
+		paused = false;
+		
+		// Get Parameters From Function Argument if it exists
 		if(arg !== undefined){
 			if(arg.width !== undefined) {width = arg.width;}
 			if(arg.height !== undefined) {height = arg.height;}
 			if(arg.querySelector !== undefined) {querySelector = arg.querySelector;}
-			if(arg.liveColor !== undefined) {liveColor = arg.liveColor;}
+			if(arg.aliveColor !== undefined) {aliveColor = arg.aliveColor;}
 			if(arg.deadColor !== undefined) {deadColor = arg.deadColor;}
 		}
+
+		// Get the canvas from the document and set its width and height
+		canvas 			= document.createElement(canvasid); // querySelector(querySelector);	
+		canvas.width		= width;
+		canvas.height		= height;
+		// Get the 2D drawing context from the canvas and the associated image data
+		ctx 			= canvas.getContext("2d");
+		imgData 		= ctx.getImageData(0, 0, width, height);
+		data 			= imgData.data;
+
+		// necessary for fillStyle
+		deadRGBA		= 'rgba('+deadColor[0]+','+deadColor[1]+','+deadColor[2]+','+deadColor[3]+')';
+		aliveRGBA		= 'rgba('+aliveColor[0]+','+aliveColor[1]+','+aliveColor[2]+','+aliveColor[3]+')';
+		
 	}
 	function drawRandomPoints(){
 
-		ctx.fillStyle = 'white'
+		ctx.fillStyle = deadRGBA
 		ctx.fillRect(0, 0, width, height);	
 		// Add random initial points which fill 10% of the usable space
 		for (i = 0; i < 0.1 * width * height; i += 1) {
 			var x = Math.round( Math.random() * (width - 1) );
 			var y = Math.round( Math.random() * (height - 1) );
-			ctx.fillStyle = 'black';
+			ctx.fillStyle = aliveRGBA;
 			ctx.fillRect(x,y,1,1);
 		}
+		drawImage();
 	}
 	function drawClickedPosition(e) {
 		var rect = e.currentTarget.getBoundingClientRect();
 		var x = e.clientX - rect.left;
 		var y = e.clientY - rect.top;  
 		if (e.which === 1){ // left click
-			ctx.fillStyle = 'black';
+			ctx.fillStyle = aliveRGBA;
 			ctx.fillRect(x,y,1,1); // fill in the pixel at (x,y)
 		}
+		drawImage();
 	}
 	function evolve() {
 
@@ -72,27 +80,30 @@ function gameOfLife(arg){
 		var data = imgData.data;
 
 	  var neighbours;
-	  var live; // whether to live or die. 1 = live, 0 = die
+	  var shouldLive; // 1 = live, 0 = die
 	  var stride = 4;
-	  // zero neighbors
+	  
+	  function isAlive(pos){
+		  return data[pos + 0] === liveColor[0] && data[pos + 1] === liveColor[1] && data[pos + 2] === liveColor[2]
+	  }
+	  
+	  // Set all neighbour values to zero
 	  for (y = 1; y < height - 1; y = y + 1) {
 	    for (x = 1; x < width - 1; x = x + 1) {
 	      pos = y * width * 4 + x * 4;
 
-	      data[pos + 3] = 0; 	// pos+3 refers to the alpha channel of the pixel
+	      data[pos + 3] = 0; 	// pos + 3 refers to the alpha channel of the pixel
 	    }
 	  }
 
-
-	  // update neighbors
+	  // Update Neighbors of surrounding cells
+	  // Add one to the neighbours of all of the surrounding cells
+	  // (3x3 square around the current cell) if the current cell is alive
 	  for (y = 1; y < height - 1; y = y + 1) {
 	    for (x = 1; x < width - 1; x = x + 1) {
 	      pos = y * width * 4 + x * 4;
 
-	      if (data[pos + 0] === black[0]) { // currCell.isAlive
-			  // These positions represent a 3x3 box around the current cell
-			  // We add one to the neighbours of all of the surrounding cells
-			  // if the current cell is alive
+	      if (data[pos + 0] === aliveColor[0]) { // currCell.isAlive
 
 	        data[pos+3 	- (width-1) 	* stride] += 1;
 	        data[pos+3 	- (width) 		* stride] += 1;
@@ -107,55 +118,78 @@ function gameOfLife(arg){
 	    }
 	  }
 
-	  // update the living
+	  // Update who's alive and who's dead
 	  for (y = 1; y < height - 1; y = y + 1) {
 	    for (x = 1; x < width - 1; x = x + 1) {
 	      pos = y * width * 4 + x * 4;
 	      neighbours = data[pos + 3];
-	      live = 0; // determines whether cell lives or dies
+	      shouldLive = 0; // determines whether cell lives or dies
 
-	      if (data[pos + 0] === black[0]) { // currCell.isAlive
+	      if (data[pos + 0] === aliveColor[0]) { // currCell.isAlive
 	        if (neighbours < 2) {
-	          live = 0; // false
+	          shouldLive = 0; // false
 	        } else if ((neighbours === 2) || (neighbours === 3)) {
-	          live = 1; // true
+	          shouldLive = 1; // true
 	        } else if (neighbours > 3) {
-	          live = 0; // false
+	          shouldLive = 0; // false
 	        }
 	      } else {
 	        if (neighbours === 3) {
-	          live = 1; // true
+	          shouldLive = 1; // true
 	        }
 	      }
-	      if (live === 1) {
-	        data[pos + 0] = black[0];
-	        data[pos + 1] = black[1];
-	        data[pos + 2] = black[2];
-	        data[pos + 3] = black[3];
+	      if (shouldLive === 1) {
+	        data[pos + 0] = aliveColor[0];
+	        data[pos + 1] = aliveColor[1];
+	        data[pos + 2] = aliveColor[2];
+	        data[pos + 3] = aliveColor[3];
 	      } else {
-	        data[pos + 0] = white[0];
-	        data[pos + 1] = white[1];
-	        data[pos + 2] = white[2];
-	        data[pos + 3] = white[3];
+	        data[pos + 0] = deadColor[0];
+	        data[pos + 1] = deadColor[1];
+	        data[pos + 2] = deadColor[2];
+	        data[pos + 3] = deadColor[3];
 	      }
 	    }
 	  }
 
-	  ctx.putImageData(imgData, 0, 0);
+	  ctx.putImageData(imgData, 0, 0);	  
+	  drawImage();
 	}
-	id = setInterval(evolve, 20);
-	function pause(){clearInterval(id)}
-	function play(){id = setInterval(evolve, 20)}
-
-	// Initialize the image and set event handler callbacks
+	function drawImage(){
+		// Put in an image for resizing.  
+	  	var img = document.querySelector('img');
+	  	img.width = window.innerWidth;
+	  	img.height = window.innerHeight;
+	  	img.src = canvas.toDataURL();
+		
+	}
+	function printGlobals(){
+		console.log(Object.keys( window ));
+	
+	}
+	
+	initialize();
 	drawRandomPoints();
-	canvas.addEventListener("mousedown",	pause,					false);
-	canvas.addEventListener("mouseup",		play,					false);
+
+	intervalID = setInterval(evolve, delay); 
+	function playpause(){
+		if (paused){
+			intervalID = setInterval(evolve, delay); //play(arg);
+			paused = false;
+		} else {
+			clearInterval(intervalID); //pause();
+			paused = true;
+		}
+	}
+	
+//	canvas.addEventListener("mousedown",	pause,					false);
+//	canvas.addEventListener("mouseup",		play,					false);
 	canvas.addEventListener("mousemove",	drawClickedPosition,	false);
 
-}
 
-gameOfLife({querySelector: "canvas", width: window.innerWidth, height: window.innerHeight})
+	
+//}
+//gameOfLife({querySelector: "canvas", width: window.innerWidth, height: window.innerHeight})
 
 
 // === Notes
