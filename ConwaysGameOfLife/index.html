@@ -15,12 +15,14 @@
 
 // function gameOfLife(arg){
 	
-	var canvasid, width, height, deadColor, aliveColor, canvas, ctx, imgData, data, deadRGBA, aliveRGBA, arg, delay, paused, intervalID;
+	var canvasid, width, height, deadColor, aliveColor, canvas, ctx, imgData, data, deadRGBA, aliveRGBA, arg, delay, paused, intervalID, aspect;
 	
 	function initialize(){
 		// Defaults
 		canvasid	 	= "canvas"
-		width 			= 400; //window.innerWidth;
+		
+		aspect = window.innerWidth / window.innerHeight;
+		width 			= 400*aspect; //window.innerWidth;
 		height 			= 400; //window.innerHeight;
 		deadColor 		= [255, 255, 255, 255];
 		aliveColor 		= [0, 0, 255, 255];
