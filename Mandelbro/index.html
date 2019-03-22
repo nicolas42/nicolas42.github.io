@@ -1,67 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="reset.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Mandelbro v11 20180219</title>
+  <title>Mandelbro</title>
 </head>
 <body>
-
-<!-- ><a href="javascript:document.body.appendChild(makeMandelbrot({width:1000, height:1000, x: -0.10932031249999986, y: -0.8950119628906247, zoom: 4096, maxIterations: 20}));
-"> Testing </a> -->
-
-
 </body>
-  <script>
+<script>
 
-// Version 9 has been put through the rigors of JSLint
-
-
-/* // My unfinished version
-function getURLParameters(){
-	// Parameters p
-	var p;
-	p = document.location.href.split("?");
-	for
-} 
-
-function paramsToUrl(){
-	return ["file:///Users/nick/Documents/Programming/JSMandelbrot/working.html?width=",  width, "&height=", height, "&x=", xcenter, "&y=", ycenter, "&zoom=", zoom, "&maxIterations=", maxIterations].join("")
-}
-
-
-file:///Users/nick/Documents/Programming/JSMandelbrot/working.html?x=-0.10931872558593737&y=-0.8950297107696531&zoom=524288&maxIterations=635
-
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.split(search).join(replacement);
-};
-
-*/
-
-
-
-
-
-/* String.prototype.toUrl = function(){
-	var str = this;
-	str = str.replaceAll(",","&");
-	str = str.replaceAll(":","=");
-	str = str.replaceAll(" ","");
-	return "file:///Users/nick/Documents/Programming/JSMandelbrot/working.html?width="+str;
-}
-
-
-"x: -0.10931872558593737, y: -0.8950297107696531, zoom: 524288, maxIterations: 635".toUrl();
-
-*/
-
-function getURLParameter(name) {
-  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&]+)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-}
-
-
- function currentURL(str){
+function currentURL(str){
 	 
 	 var url = document.location.href
 	 if (url.indexOf("?") !== -1){
@@ -70,7 +19,37 @@ function getURLParameter(name) {
 	 return url+"?x="+xcenter+"&y="+ycenter+"&zoom="+zoom+"&maxIterations="+maxIterations;
 } 
 
-// toUrl("x: -0.10931872558593737, y: -0.8950297107696531, zoom: 524288, maxIterations: 635");
+
+function getURLParameter(name){
+	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&]+)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
+
+function elt(type) {
+	// Create HTML element tree modified from eloquent javascript
+	
+	var node = document.createElement(type);
+	var i;
+	var child;
+	var attr;
+	for (i = 1; i < arguments.length; i+=1) {
+	  child = arguments[i];
+	  if (typeof child === "string"){
+
+	  	if ( child.includes("=") ) {
+			attr = child.split("=");
+	      node.setAttribute(attr[0],attr[1]);
+	    } else {
+	    	child = document.createTextNode(child);
+	      	node.appendChild(child);
+	    }
+
+	  } else {
+	  	node.appendChild(child);
+		}
+	}
+	return node;
+}
+
 
 var width;
 var height;
@@ -82,20 +61,6 @@ var maxIterations;
 function makeMandelbrot(arg){ // Takes object with fields width,height,x,y,zoom,maxIterations){
 	"use strict";
 
-
-
-	// var white = [255, 255, 255, 255];
-	// var red = [255,0,0,255];
-	// var yellow = [255,240,120,255];
-	// var teal = [0,255,255,255];
-	// var chosenColor = red;
-
-
-	// Example: xmax = xcenter + span; xmin = xcenter - span
-	// 2*span = sideLength (math numbers)
-
-
-	
 	// Defaults
 	width = 800;
 	height = 800;
@@ -135,56 +100,27 @@ function makeMandelbrot(arg){ // Takes object with fields width,height,x,y,zoom,
 	}
 		
 	// Calculate Initial Values
-	var span = 1 / zoom * 2;
-	var xmin = xcenter - span;
-    var xmax = xcenter + span;
-    var ymin = ycenter - span;
-    var ymax = ycenter + span;
-	
-	// var width = 1000; // in pixels
-	// var height = 1000;
+	var aspect = width / height;
+	var yspan = 2 / zoom;
+	var xspan = 2 * aspect / zoom;
+	var xmin = xcenter - xspan;
+    var xmax = xcenter + xspan;
+    var ymin = ycenter - yspan;
+    var ymax = ycenter + yspan;
 
 	// Scalers convert between pixel lengths and math lengths
-
 	var xscale = width / (xmax - xmin); 
 	var yscale = height / (ymax - ymin);
-
-	// helper function to create HTML element tree on which to hang stuff
-	function elt(type) {
-		// Make HTML Element Tree function modified from eloquent javascript
-		
-		var node = document.createElement(type);
-		var i;
-		var child;
-		var attr;
-		for (i = 1; i < arguments.length; i+=1) {
-		  child = arguments[i];
-		  if (typeof child === "string"){
-  
-		  	if ( child.includes("=") ) {
-    			attr = child.split("=");
-		      node.setAttribute(attr[0],attr[1]);
-		    } else {
-		    	child = document.createTextNode(child);
-		      	node.appendChild(child);
-		    }
-
-		  } else {
-		  	node.appendChild(child);
-			}
-		}
-		return node;
-	}
 
 	// Make HTML Nodes
 	var node = elt("div", "id=mandelbro",
 		elt("canvas", "id=canvas"),
-		elt("p", "id=infoPara"),
 		elt("button", "id=resetButton", "style=margin-right: 10px", "Reset"),
 		elt("label","Max Iterations"),
 		elt("input", "id=inputField"),
 		elt("button","id=drawButton", "Draw"),
 		elt("br"),
+		elt("p", "id=infoPara"),
 		elt("h1", "Mandelbro"),
 		elt("p", "Left click to zoom in, right click to zoom out. Increase max iterations for more detail.  Save your place with the URL. "),
 		elt("p", "If you zoom in to some black areas you might want to increase the maxIterations value to get a more interesting image.  It will slow down the rendering though.  This program uses floating point math so if you zoom in far enough you will eventually see a low-res pixely image. This could be fixed by using big numbers with a int64 exponent.")
@@ -276,12 +212,13 @@ function makeMandelbrot(arg){ // Takes object with fields width,height,x,y,zoom,
 	    	  maxIterations = inputValue;
 	      }
 
-		span = 1 / zoom * 2;
+		yspan = 2 / zoom;
+		xspan = 2 * aspect / zoom;
 
-		xmin = xcenter - span;
-		xmax = xcenter + span;
-		ymin = ycenter - span;
-		ymax = ycenter + span;
+		xmin = xcenter - xspan;
+		xmax = xcenter + xspan;
+		ymin = ycenter - yspan;
+		ymax = ycenter + yspan;
 
   	  xscale = width / (xmax - xmin);
   	  yscale = height / (ymax - ymin);
@@ -305,8 +242,8 @@ function makeMandelbrot(arg){ // Takes object with fields width,height,x,y,zoom,
 			  // 500,0 -> 2,0 -> 0,-2
 			  // 500,250 -> 2,1 -> 0, -1
 			  // 500, 125 -> 2,0.5 -> 0, -1.5
-			  cx = xcenter - span + x / xscale;
-			  cy = ycenter - span + y / yscale;
+			  cx = xcenter - xspan + x / xscale;
+			  cy = ycenter - yspan + y / yscale;
 				// image is flipped vertically. numbers go up, pixels go down 
 			zx = 0;
 			zy = 0;
@@ -410,7 +347,7 @@ function makeMandelbrot(arg){ // Takes object with fields width,height,x,y,zoom,
 //m = makeMandelbrot({width: 500, height: 500, x: -0.10931872558593737, y: -0.8950297107696531, zoom: 524288, maxIterations: 635});
 // document.body.appendChild(m);
 
-document.body.appendChild(makeMandelbrot());
+document.body.appendChild(makeMandelbrot({width: window.innerWidth, height: window.innerHeight}));
 
   </script>
 </html>

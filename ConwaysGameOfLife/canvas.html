@@ -6,20 +6,24 @@
   <link rel="stylesheet" href="reset.css">
 </head>
 <body>
-	<button onclick="playpause()">Play/Pause</button><br>
-	<!--<canvas></canvas> -->
-	<img>
-
+	<canvas></canvas>
 </body>
 <script>
 
+/*
+	var pi = Math.PI; 
+	
+	ctx.beginPath(); ctx.ellipse(100,100,20,20,2*pi,0,2*pi,false); ctx.stroke()
+	ctx.fillRect(50,50,100,100);
+*/
+	
 // function gameOfLife(arg){
 	
 	var canvasid, width, height, deadColor, aliveColor, canvas, ctx, imgData, data, deadRGBA, aliveRGBA, arg, delay, paused, timerID;
 	
 	function initialize(){
 		// Defaults
-		canvasid	 	= "canvas"
+		querySelector	 	= "canvas"
 		// aspect = window.innerWidth / window.innerHeight;
 		width 			= 200; //window.innerWidth;
 		height 			= 200; //window.innerHeight;
@@ -38,7 +42,7 @@
 		}
 
 		// Get the canvas from the document and set its width and height
-		canvas 			= document.createElement(canvasid); // querySelector(querySelector);	
+		canvas 			= document.querySelector(querySelector);	
 		canvas.width		= width;
 		canvas.height		= height;
 		// Get the 2D drawing context from the canvas and the associated image data
@@ -169,10 +173,9 @@
 	
 	}
 
-	initialize();
-	drawRandomPoints();
-
-	timerID = setInterval(evolve, delay); 
+	function initializeTimer(){
+		timerID = setInterval(evolve, delay); 
+	}
 	function pause(){
 		clearInterval(timerID); //pause();
 		paused = true;
@@ -190,13 +193,18 @@
 			paused = true;
 		}
 	}
-	
-	canvas.addEventListener("mousedown",	pause,					false);
-	canvas.addEventListener("mouseup",		play,					false);
-	canvas.addEventListener("mousemove",	drawClickedPosition,	false);
+	function addEventListeners(){
+		canvas.addEventListener("mousedown",	pause,					false);
+		canvas.addEventListener("mouseup",		play,					false);
+		canvas.addEventListener("mousemove",	drawClickedPosition,	false);
+	}
 
-
-	
+	function main(){
+		initialize();
+		drawRandomPoints();
+		initializeTimer();
+		addEventListeners();
+	}
 //}
 //gameOfLife({querySelector: "canvas", width: window.innerWidth, height: window.innerHeight})
 
