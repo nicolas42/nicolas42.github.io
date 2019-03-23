@@ -107,6 +107,16 @@ var Preview = {
     this.textarea = document.getElementById("marked-mathjax-input");
   },
 
+  LoadLocalStorage: function () {
+    if (null !== localStorage.getItem("marked-mathjax-input")){
+      this.textarea.innerHTML = localStorage.getItem("marked-mathjax-input");
+    }
+  },
+
+  SaveLocalStorage: function () {
+    localStorage.setItem("marked-mathjax-input", this.textarea.value);
+    console.log(this.textarea.value);
+  },
   //
   //  Switch the buffer and preview, and display the right one.
   //  (We use visibility:hidden rather than display:none since
@@ -156,6 +166,7 @@ var Preview = {
       ["PreviewDone",this],
       ["resetEquationNumbers", MathJax.InputJax.TeX]
     );
+    this.SaveLocalStorage()
   },
 
   //
@@ -360,6 +371,7 @@ $$\{\sum_{i=1}^n a_{ij}x_i | 1 \leq j \leq m \}$$
 
 <script>
 Preview.Init();
+Preview.LoadLocalStorage();
 Preview.Update();
 </script>
 
