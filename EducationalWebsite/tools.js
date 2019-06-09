@@ -26,7 +26,8 @@ function toggleMargins() {
 	style.maxWidth = '800px';
   } else {
 	style.maxWidth = 'none';
-  }
+	}
+	// console.log('toggleMargins');
 }
 
 function playPauseOrbitVideo(arg) {
