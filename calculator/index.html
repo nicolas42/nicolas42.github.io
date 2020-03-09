@@ -1,8 +1,12 @@
 <!-- https://eloquentjavascript.net/15_event.html -->
 <textarea autofocus></textarea>
 <p></p>
+<span></span>
 
 <script>
+
+    /* import Math */ (function(){ Object.getOwnPropertyNames(Math).forEach(function(a){eval(a+"="+"Math."+a+"\t")}); })();
+    document.querySelector('span').innerHTML = (function(){ let o=[];  Object.getOwnPropertyNames(Math).forEach(function(a){o.push(" "+a)});  return o.toString(); })();
 
     window.addEventListener("keyup", event => {
 
