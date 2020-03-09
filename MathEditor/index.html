@@ -159,6 +159,7 @@ var Preview = {
     var text = this.textarea.value;
     if (text === this.oldtext) return;
     text = this.Escape(text);                       //Escape tags before doing stuff
+    console.log(text);
     this.buffer.innerHTML = this.oldtext = text;
     this.mjRunning = true;
     MathJax.Hub.Queue(
@@ -177,6 +178,7 @@ var Preview = {
   PreviewDone: function () {
     this.mjRunning = false;
     text = this.buffer.innerHTML;
+    console.log(text);
     text = this.PartialDescape(text);
     this.buffer.innerHTML = marked (text);
     this.SwapBuffers();
