@@ -1,60 +1,86 @@
 
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
 
-<style>
-    * {
-        box-sizing: border-box;
-        padding: 0;
-        margin: 0;
-        font-size: 20px;
-        line-height: 2;
-        font-family: Helvetica, Arial, sans-serif;
-        letter-spacing: 0.01rem;
-        font-weight: 300;
-        color: #333;
-
-        background-color: #ffff;
-    }
-
-    body {
-        margin: 0 auto;
-        max-width: 800px;
-    }
-
-    video {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    textarea {
-        width: 100%;
-        padding-left: 10px;
-    }
-
-    h1 {
-        font-size: 40px;
-        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-        background-color: #ddd;
-        text-align: center;
-    }
-
-
-    canvas { width: 800px; height: 800px;}
-
-</style>
-
+<body>
 <h1>Conway</h1>
 <canvas></canvas> 
+<textarea>
+height: 200,
+width: 200,
+aliveColor: hexToBytes("8A2BE2FF"),
+deadColor: [255, 255, 255, 255], 
+delay: 200
+</textarea>
+<button onclick="doit(document.querySelector('textarea').value)">
+doit
+</button>
+<pre>
+// Options
+height: 200,
+width: 200,
+aliveColor: hexToBytes("8A2BE2FF"),
+deadColor: [255, 255, 255, 255], 
+delay: 200
+canvas: document.querySelector("canvas"), 
 
+</body>
 
 <script src="conway.js"></script>
-<script>
-conway({
-    canvas: document.querySelector("canvas"), 
-    height: 200,
-    width: 200,
-    aliveColor: [0, 0, 255, 255], 
-    deadColor: [255, 255, 255, 255], 
-    delay: 200
-});
 
+<script>
+
+function doit(a){
+
+clearInterval(timerID);
+eval("timerID = conway({" + a + "});");
+
+}
+
+// https://stackoverflow.com/questions/14603205/how-to-convert-hex-string-into-a-bytes-array-and-a-bytes-array-in-the-hex-strin
+// from crypto-js
+
+// Convert a hex string to a byte array
+function hexToBytes(hex) {
+    for (var bytes = [], c = 0; c < hex.length; c += 2)
+    bytes.push(parseInt(hex.substr(c, 2), 16));
+    return bytes;
+}
+
+// Convert a byte array to a hex string
+function bytesToHex(bytes) {
+    for (var hex = [], i = 0; i < bytes.length; i++) {
+        var current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+        hex.push((current >>> 4).toString(16));
+        hex.push((current & 0xF).toString(16));
+    }
+    return hex.join("");
+}
+    
+var timerID = conway();
+// conway() sets a timer
+// clear the timer before you set another
+
+// clearInterval(timerID);
+// conway({aliveColor: hexToBytes("8A2BE2FF")});
+
+
+// clearInterval(timerID);
+// // options
+// conway({
+//     timerID
+//     canvas: document.querySelector("canvas"), 
+//     height: 200,
+//     width: 200,
+//     aliveColor: hexToBytes("8A2BE2FF"),
+//     deadColor: [255, 255, 255, 255], 
+//     delay: 200
+// });
+
+</script>
+
+<script src='autosize.js'></script>
+<script>
+    autosize(document.querySelector('textarea'));
 </script>

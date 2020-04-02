@@ -2,8 +2,9 @@
 // How to resize canvas
 // https://stackoverflow.com/questions/4938346/canvas-width-and-height-in-html5
 
-var conway = function(a){
+var conway = function(options){
 
+    // "use strict"
 function evolve(canvas, aliveColor, deadColor) {
 
     // The alpha channel is used to keep track of the number of neighbours
@@ -15,9 +16,9 @@ function evolve(canvas, aliveColor, deadColor) {
     var stride = 4;
 
     // Set all neighbour values to zero
-    for (y = 1; y < canvas.height - 1; y = y + 1) {
-        for (x = 1; x < canvas.width - 1; x = x + 1) {
-            pos = y * canvas.width * 4 + x * 4;
+    for (var y = 1; y < canvas.height - 1; y = y + 1) {
+        for (var x = 1; x < canvas.width - 1; x = x + 1) {
+            var pos = y * canvas.width * 4 + x * 4;
 
             image.data[pos + 3] = 0; 	// pos + 3 refers to the alpha channel of the pixel
         }
@@ -83,7 +84,7 @@ function evolve(canvas, aliveColor, deadColor) {
 }
 
 
-function drawRandomPoints(canvas, deadColor, aliveColor){
+function drawRandomPoints(canvas, aliveColor, deadColor){
 
     // Draw initial random points to fill 10% of the usable space
     var ctx = canvas.getContext("2d");
@@ -91,7 +92,7 @@ function drawRandomPoints(canvas, deadColor, aliveColor){
     var rgbaAliveColor = 'rgba(' + aliveColor[0] + ',' + aliveColor[1] + ',' + aliveColor[2] + ',' + aliveColor[3] + ')';
     ctx.fillStyle = rgbaDeadColor // needs this format apparently
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    for (i = 0; i < 0.1 * canvas.width * canvas.height; i += 1) {
+    for (var i = 0; i < 0.1 * canvas.width * canvas.height; i += 1) {
         var x = Math.round(Math.random() * (canvas.width - 1));
         var y = Math.round(Math.random() * (canvas.height - 1));
         ctx.fillStyle = rgbaAliveColor;
@@ -99,42 +100,31 @@ function drawRandomPoints(canvas, deadColor, aliveColor){
     }
 }
 
-// defaults = {
-//     canvas: document.querySelector("canvas"), 
-//     height: 200,
-//     width: 200,
-//     aliveColor: [0, 0, 255, 255], 
-//     deadColor: [255, 255, 255, 255], 
-//     delay: 200
-// };
+var defaults = {
+    canvas: document.querySelector("canvas"), 
+    height: 200,
+    width: 200,
+    aliveColor: [0, 0, 255, 255], 
+    deadColor: [255, 255, 255, 255], 
+    delay: 200
+};
 
+let a = Object.assign({}, defaults, options);
 
+a.canvas.width = a.width;
+a.canvas.height = a.height;
 
-var canvas = a.canvas;
-canvas.height = a.height;
-canvas.width = a.width;
-var deadColor = a.deadColor;
-var aliveColor = a.aliveColor;
-var delay = a.delay;
-var paused = a.paused;
+drawRandomPoints(a.canvas, a.aliveColor, a.deadColor);
 
-// var canvas = document.querySelector("canvas"); 
-// canvas.width  = 200;
-// canvas.height = 200; 
-
-// var deadColor = [255, 255, 255, 255]; 
-// var aliveColor = [0, 0, 255, 255];
-
-// // Playback
-// var timerID, paused, delay;
-// delay = 200; 
 
 // clearInterval(timerID); //pause;
-drawRandomPoints(canvas, deadColor, aliveColor);
-var timerID = setInterval(()=>{evolve(canvas, aliveColor, deadColor)}, delay); // play;
 
-// canvas.addEventListener("mousedown",	pause,					false);
-// canvas.addEventListener("mouseup",		play,					false);
-// canvas.addEventListener("mousemove",	drawClickedPosition,	false);
+var timerID = setInterval(
+    ()=>{evolve(a.canvas, a.aliveColor, a.deadColor)}, 
+    a.delay
+); // play;
+
+return timerID;
 };
+
 

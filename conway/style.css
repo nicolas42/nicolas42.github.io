@@ -1,0 +1,34 @@
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    line-height: 2;
+    font-family: Helvetica, sans-serif;
+    letter-spacing: 0.01rem;
+    font-weight: 300;
+    color: #333;
+    background-color: #ffff;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+* {
+    width: 100%;
+    padding-left: 10px;
+    line-height: 1.5;
+    font-size: 16px;
+}
+
+h1 { text-align: center; 
+    font-size: 40px;  background-color: #eee; 
+}
+
+    
+canvas { width: 100vh; height: 100vh;}
+
+textarea { font-family:'Courier New', Courier, monospace; }
