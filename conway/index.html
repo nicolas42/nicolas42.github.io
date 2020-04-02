@@ -6,62 +6,54 @@
 <body>
 <h1>Conway</h1>
 <canvas></canvas> 
+
 <textarea>
 height: 200,
 width: 200,
-aliveColor: hexToBytes("8A2BE2FF"),
-deadColor: [255, 255, 255, 255], 
-delay: 200
+aliveColor: "8A2BE2FF",
+deadColor: "FFFFFFFF",
+delay: 200,
 </textarea>
 <button onclick="doit(document.querySelector('textarea').value)">
 doit
 </button>
 <pre>
-// Options
+// Examples of Options
 height: 200,
 width: 200,
-aliveColor: hexToBytes("8A2BE2FF"),
-deadColor: [255, 255, 255, 255], 
-delay: 200
-canvas: document.querySelector("canvas"), 
-
+aliveColor: "8A2BE2FF",
+deadColor: "FFFFFFFF",
+delay: 200,
+canvas: document.querySelector("canvas"),
+</pre>
 </body>
 
 <script src="conway.js"></script>
 
 <script>
 
-function doit(a){
 
-clearInterval(timerID);
-eval("timerID = conway({" + a + "});");
 
+function clearAllTimers(){
+    for(i=0;i<1000;i++){clearInterval(i)};
+}
+function doit(str){
+
+    clearAllTimers();
+
+    eval("a = {\n" + document.querySelector('textarea').value + "}")
+    // a.aliveColor = hexToBytes(a.aliveColor);
+    // a.deadColor = hexToBytes(a.deadColor);
+    // if (a.aliveColor.length === 3){ a.aliveColor.push(255); }
+    // if (a.deadColor.length === 3){ a.deadColor.push(255); }
+    conway(a);
 }
 
-// https://stackoverflow.com/questions/14603205/how-to-convert-hex-string-into-a-bytes-array-and-a-bytes-array-in-the-hex-strin
-// from crypto-js
-
-// Convert a hex string to a byte array
-function hexToBytes(hex) {
-    for (var bytes = [], c = 0; c < hex.length; c += 2)
-    bytes.push(parseInt(hex.substr(c, 2), 16));
-    return bytes;
-}
-
-// Convert a byte array to a hex string
-function bytesToHex(bytes) {
-    for (var hex = [], i = 0; i < bytes.length; i++) {
-        var current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
-        hex.push((current >>> 4).toString(16));
-        hex.push((current & 0xF).toString(16));
-    }
-    return hex.join("");
-}
     
 var timerID = conway();
+
 // conway() sets a timer
 // clear the timer before you set another
-
 // clearInterval(timerID);
 // conway({aliveColor: hexToBytes("8A2BE2FF")});
 
@@ -78,6 +70,25 @@ var timerID = conway();
 //     delay: 200
 // });
 
+
+/*
+This combination of settings kills the game ?????
+height: 200,
+width: 200,
+aliveColor: "002BE2",
+deadColor: "00FFFF",
+delay: 200,
+canvas: document.querySelector("canvas"), 
+*/
+
+document.querySelector('textarea').addEventListener("keydown", function(e){
+    // key = "Enter" shiftKey = true
+    if (e.key === "Enter" && e.shiftKey === true){
+        doit(document.querySelector('textarea').value);
+        e.preventDefault();
+    }
+
+})
 </script>
 
 <script src='autosize.js'></script>
