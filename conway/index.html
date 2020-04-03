@@ -6,25 +6,10 @@
 <body>
     <h1>Conway</h1>
     <canvas></canvas> 
-    <textarea>
-height: 200,
-width: 200,
-aliveColor: "8A2BE2FF",
-deadColor: "FFFFFFFF",
-delay: 200,
-    </textarea>
-    <button onclick="doit(document.querySelector('textarea').value)">
-    doit
-    </button>
-    <pre>
-    // Examples of Options
-    height: 200,
-    width: 200,
-    aliveColor: "8A2BE2FF",
-    deadColor: "FFFFFFFF",
-    delay: 200,
-    canvas: document.querySelector("canvas"),
-    </pre>
+    <textarea>height: 100, width: 100, aliveColor: "8A2BE2FF", deadColor: "FFFFFFFF", delay: 500,</textarea>
+    <button onclick="doit(document.querySelector('textarea').value)">doit</button>
+    <p>Example</p>
+    <p>height: 100, width: 100, aliveColor: "8A2BE2FF", deadColor: "FFFFFFFF", delay: 500, canvas: document.querySelector("canvas"),</p>
 </body>
 
 <script src="conway.js"></script>

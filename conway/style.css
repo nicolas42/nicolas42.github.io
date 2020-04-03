@@ -1,15 +1,17 @@
 
 * {
     box-sizing: border-box;
-    padding: 0;
     margin: 0;
+    padding: 0;
+}
+
+* {
+    width: 100%;
+
+    font-family:'Courier New', Courier, monospace; 
+    line-height: 1.5;
     font-size: 20px;
-    line-height: 2;
-    font-family: Helvetica, sans-serif;
-    letter-spacing: 0.01rem;
-    font-weight: 300;
     color: #333;
-    background-color: #ffff;
 }
 
 body {
@@ -19,15 +21,10 @@ body {
 
 h1 { text-align: center; 
     font-size: 40px;  background-color: #eee; 
+    line-height: 2;
+    font-family: Helvetica, sans-serif;
+    letter-spacing: 0.01rem;
+    font-weight: 300;
 }
 
-    
-canvas { width: 940px; height: 940px;}
-
-textarea { font-family:'Courier New', Courier, monospace; 
-        width: 100%;
-        padding-left: 10px;
-        line-height: 1.5;
-        font-size: 16px;
-    
-}
+textarea, pre { padding: 10px; }
