@@ -4,53 +4,71 @@
   </head>
 
 <body>
-<h1>Conway</h1>
-<canvas></canvas> 
-
-<textarea>
-height: 200,
-width: 200,
-aliveColor: "8A2BE2FF",
-deadColor: "FFFFFFFF",
-delay: 200,
-</textarea>
-<button onclick="doit(document.querySelector('textarea').value)">
-doit
-</button>
-<pre>
-// Examples of Options
-height: 200,
-width: 200,
-aliveColor: "8A2BE2FF",
-deadColor: "FFFFFFFF",
-delay: 200,
-canvas: document.querySelector("canvas"),
-</pre>
+    <h1>Conway</h1>
+    <canvas></canvas> 
+    <textarea>
+    height: 200,
+    width: 200,
+    aliveColor: "8A2BE2FF",
+    deadColor: "FFFFFFFF",
+    delay: 200,
+    </textarea>
+    <button onclick="doit(document.querySelector('textarea').value)">
+    doit
+    </button>
+    <pre>
+    // Examples of Options
+    height: 200,
+    width: 200,
+    aliveColor: "8A2BE2FF",
+    deadColor: "FFFFFFFF",
+    delay: 200,
+    canvas: document.querySelector("canvas"),
+    </pre>
 </body>
 
 <script src="conway.js"></script>
-
 <script>
 
+    function clearAllTimers(){
+        for(i=0;i<1000;i++){clearInterval(i)};
+    }
 
+    function doit(str){
+        clearAllTimers();
+        eval("a = {\n" + document.querySelector('textarea').value + "}")
+        conway(a);
+    }
 
-function clearAllTimers(){
-    for(i=0;i<1000;i++){clearInterval(i)};
-}
-function doit(str){
+    document.querySelector('textarea').addEventListener("keydown", function(e){
+        // key = "Enter" shiftKey = true
+        if (e.key === "Enter" && e.shiftKey === true){
+            doit(document.querySelector('textarea').value);
+            e.preventDefault();
+        }
 
-    clearAllTimers();
+    })
 
-    eval("a = {\n" + document.querySelector('textarea').value + "}")
-    // a.aliveColor = hexToBytes(a.aliveColor);
-    // a.deadColor = hexToBytes(a.deadColor);
-    // if (a.aliveColor.length === 3){ a.aliveColor.push(255); }
-    // if (a.deadColor.length === 3){ a.deadColor.push(255); }
-    conway(a);
-}
-
+    var timerID = conway();
     
-var timerID = conway();
+
+</script>
+<script src='autosize.js'></script>
+<script>
+    autosize(document.querySelector('textarea'));
+</script>
+
+
+
+
+<!--
+
+
+// a.aliveColor = hexToBytes(a.aliveColor);
+// a.deadColor = hexToBytes(a.deadColor);
+// if (a.aliveColor.length === 3){ a.aliveColor.push(255); }
+// if (a.deadColor.length === 3){ a.deadColor.push(255); }
+
 
 // conway() sets a timer
 // clear the timer before you set another
@@ -71,27 +89,6 @@ var timerID = conway();
 // });
 
 
-/*
-This combination of settings kills the game ?????
-height: 200,
-width: 200,
-aliveColor: "002BE2",
-deadColor: "00FFFF",
-delay: 200,
-canvas: document.querySelector("canvas"), 
-*/
+-->
 
-document.querySelector('textarea').addEventListener("keydown", function(e){
-    // key = "Enter" shiftKey = true
-    if (e.key === "Enter" && e.shiftKey === true){
-        doit(document.querySelector('textarea').value);
-        e.preventDefault();
-    }
 
-})
-</script>
-
-<script src='autosize.js'></script>
-<script>
-    autosize(document.querySelector('textarea'));
-</script>
