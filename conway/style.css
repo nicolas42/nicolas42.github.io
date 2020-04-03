@@ -14,7 +14,7 @@
 
 body {
     margin: 0 auto;
-    max-width: 800px;
+    max-width: 940px;
 }
 
 h1 { text-align: center; 
@@ -22,7 +22,7 @@ h1 { text-align: center;
 }
 
     
-canvas { width: 100vh; height: 100vh;}
+canvas { width: 940px; height: 940px;}
 
 textarea { font-family:'Courier New', Courier, monospace; 
         width: 100%;
