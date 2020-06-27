@@ -1,26 +1,28 @@
-
 function mandelbrot(canvas) {
 	"use strict";
 
-	// zoom maxes out at about 
-	// 562949953421312
-	// 879609302220800
+	/*
+		optionally take arguments from url
+		draws mandelbrot image
+		register event handlers for left and right mouse clicks
+		left click zooms in right click zooms out
 
-	// the zoom itself is just the number that scales the size of the frame
-	// the original size is 4x4 
+	*/
 
-	// image and parameters a
-	var im, a;
+	var img, a;
+
+	// parameters
+	a = { x: 0, y: 0, zoom: 1, w: 500, h: 500}
+	get_parameters_from_url(a, window.location.href)
+
+	canvas.width = a.w;
+	canvas.height = a.h;
+	// get image from canvas
+	img = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
 
 	function main() {
-		// get image from canvas
-		im = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
 
-		// make/get parameters
-		a = { x: 0, y: 0, zoom: 1 } // defaults
-		get_parameters_from_url(a, window.location.href)
-
-		draw_mandelbrot();
+		draw_mandelbrot(true);
 		update_url_without_refreshing_page();
 		// respond to left and right mouse clicks
 		canvas.addEventListener("mousedown", on_mousedown, false);
@@ -37,6 +39,14 @@ function mandelbrot(canvas) {
 		return vars;
 	}
 
+
+
+
+	function update_url_without_refreshing_page() {
+		console.log(a)
+		// https://computerrock.com/blog/html5-changing-the-browser-url-without-refreshing-page/
+		window.history.replaceState("object or string", "Title", "?x=" + a.x + "&y=" + a.y + "&zoom=" + a.zoom+ "&w=" + a.w + "&h=" + a.h + "&max_iterations=" + a.max_iterations );
+	}
 
 	function hsl_to_rgb(h, s, l) {
 		var r;
@@ -78,40 +88,41 @@ function mandelbrot(canvas) {
 		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 	}
 
+	function draw_mandelbrot(max_iterations_supplied = false) {
 
-	function draw_mandelbrot() {
+		// the first time the page is loaded max_iterations can be overrided with a url parameter
+		if (max_iterations_supplied === false || typeof a.max_iterations === "undefined") {
+			a.max_iterations = (255 + (20 * Math.log2(a.zoom)));
+		}
+		
 
 		var black = [0, 0, 0, 255];
 		var stride = 4;
 
-		// make a black image
-		for (i = 0; i < im.data.length; i += stride) {
-			im.data[i + 0] = black[0];
-			im.data[i + 1] = black[1];
-			im.data[i + 2] = black[2];
-			im.data[i + 3] = black[3];
+		var x, y, zx, zxtemp, zy, cx, cy, rgb, i, in_set, pos;
+		var math_height = 4 / a.zoom;
+		var math_width = 4 / a.zoom;
+
+		// make black image
+		for (i = 0; i < img.data.length; i += stride) {
+			img.data[i + 0] = black[0];
+			img.data[i + 1] = black[1];
+			img.data[i + 2] = black[2];
+			img.data[i + 3] = black[3];
 		}
 
 		// main loop
-		for (y = 0; y < im.height; y += 1) {
-			for (x = 0; x < im.width; x += 1) {
-
-				var x, y, zx, zxtemp, zy, cx, cy, rgb, i, in_set, pos;
-				var max_iterations;
-				var math_height = 4 / a.zoom;
-				var math_width = 4 / a.zoom;
-
-				// math numbers
-				cx = (a.x - math_width / 2) + x / (im.width / math_width);
-				cy = (a.y - math_height / 2) + y / (im.width / math_width);
-				// image is flipped vertically. numbers go up, pixels go down
-				// who cares
+		for (y = 0; y < img.height; y += 1) {
+			for (x = 0; x < img.width; x += 1) {
+				// get math point from image point
+				cx = (a.x - math_width / 2) + x * (math_width / img.width);
+				cy = (a.y - math_height / 2) + y * (math_width / img.width);
+				// image is flipped vertically. numbers go up, pixels go down. who cares
 				zx = 0;
 				zy = 0;
 
 				in_set = true;
-				max_iterations = (255 + (20 * Math.log2(a.zoom)));
-				for (i = 1; i <= max_iterations; i += 1) {
+				for (i = 1; i <= a.max_iterations; i += 1) {
 					zxtemp = zx * zx - zy * zy + cx;
 					zy = 2 * zx * zy + cy;
 					zx = zxtemp;
@@ -122,23 +133,19 @@ function mandelbrot(canvas) {
 				}
 
 				if (in_set === false) {
-					pos = y * im.width * stride + x * stride;
+					pos = y * img.width * stride + x * stride;
 					rgb = hsl_to_rgb((i % 255) / 255, 1, 0.5);
-					im.data[pos + 0] = rgb[0];
-					im.data[pos + 1] = rgb[1];
-					im.data[pos + 2] = rgb[2];
-					// im.data[pos + 3] = rgb[3]; // don't mess with opacity
+					img.data[pos + 0] = rgb[0];
+					img.data[pos + 1] = rgb[1];
+					img.data[pos + 2] = rgb[2];
+					// img.data[pos + 3] = rgb[3]; // don't mess with opacity
 				}
 			}
 		}
-		canvas.getContext("2d").putImageData(im, 0, 0);
+		canvas.getContext("2d").putImageData(img, 0, 0);
+		console.log(a.max_iterations)
 	}
 
-
-	function update_url_without_refreshing_page() {
-		// https://computerrock.com/blog/html5-changing-the-browser-url-without-refreshing-page/
-		window.history.replaceState("object or string", "Title", "?x="+a.x+"&y="+a.y+"&zoom="+a.zoom);
-	}
 
 	var on_mousedown = function (e) {
 		if (e.which === 1) {
@@ -151,8 +158,8 @@ function mandelbrot(canvas) {
 			var math_width = 4 / a.zoom;
 
 			// update globals
-			a.x = (a.x - math_width / 2) + x_pixel / (im.width / math_width);
-			a.y = (a.y - math_height / 2) + y_pixel / (im.height / math_height);
+			a.x = (a.x - math_width / 2) + x_pixel / (img.width / math_width);
+			a.y = (a.y - math_height / 2) + y_pixel / (img.height / math_height);
 			a.zoom *= 2;
 
 		} else if (e.which === 3) { // right click
