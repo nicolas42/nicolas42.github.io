@@ -5,7 +5,7 @@ function mandelbrot(canvas) {
 	// zoom maxes out at about 
 	// 562949953421312
 	// 879609302220800
-	
+
 	// the zoom itself is just the number that scales the size of the frame
 	// the original size is 4x4 
 
@@ -38,7 +38,7 @@ function mandelbrot(canvas) {
 	}
 
 
-	function hslToRgb(h, s, l) {
+	function hsl_to_rgb(h, s, l) {
 		var r;
 		var g;
 		var b;
@@ -123,7 +123,7 @@ function mandelbrot(canvas) {
 
 				if (in_set === false) {
 					pos = y * im.width * stride + x * stride;
-					rgb = hslToRgb((i % 255) / 255, 1, 0.5);
+					rgb = hsl_to_rgb((i % 255) / 255, 1, 0.5);
 					im.data[pos + 0] = rgb[0];
 					im.data[pos + 1] = rgb[1];
 					im.data[pos + 2] = rgb[2];
