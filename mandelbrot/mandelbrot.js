@@ -1,26 +1,26 @@
 function mandelbrot(canvas) {
 	"use strict";
 
-	/*
-		optionally take arguments from url
-		draws mandelbrot image
-		register event handlers for left and right mouse clicks
-		left click zooms in right click zooms out
+	// This mandelbrot takes all its parameters from the url and also updates the url which is neat
+	// but this prevents it from being embedded in a larger website with other items
 
-	*/
+	// optionally take arguments from url
+	// draws mandelbrot image
+	// register event handlers for left and right mouse clicks
+	// left click zooms in right click zooms out
 
 	var img, a;
 
-	// parameters
-	a = { x: 0, y: 0, zoom: 1, w: 500, h: 500}
-	get_parameters_from_url(a, window.location.href)
-
-	canvas.width = a.w;
-	canvas.height = a.h;
-	// get image from canvas
-	img = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
-
 	function main() {
+
+		// default parameters
+		a = { x: 0, y: 0, zoom: 1, w: 500, h: 500}
+		get_parameters_from_url(a, window.location.href)
+
+		canvas.width = a.w;
+		canvas.height = a.h;
+		// get image from canvas
+		img = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
 
 		draw_mandelbrot(true);
 		update_url_without_refreshing_page();
@@ -29,63 +29,6 @@ function mandelbrot(canvas) {
 		// disable context menu
 		canvas.addEventListener("contextmenu", (e) => { e.preventDefault(); });
 
-	}
-
-	function get_parameters_from_url(vars, url) {
-		// from https://html-online.com/articles/get-url-parameters-javascript/
-		var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-			vars[key] = value;
-		});
-		return vars;
-	}
-
-
-
-
-	function update_url_without_refreshing_page() {
-		console.log(a)
-		// https://computerrock.com/blog/html5-changing-the-browser-url-without-refreshing-page/
-		window.history.replaceState("object or string", "Title", "?x=" + a.x + "&y=" + a.y + "&zoom=" + a.zoom+ "&w=" + a.w + "&h=" + a.h + "&max_iterations=" + a.max_iterations );
-	}
-
-	function hsl_to_rgb(h, s, l) {
-		var r;
-		var g;
-		var b;
-		function hue2rgb(p, q, t) {
-			if (t < 0) {
-				t += 1;
-			}
-			if (t > 1) {
-				t -= 1;
-			}
-			if (t < 1 / 6) {
-				return p + (q - p) * 6 * t;
-			}
-			if (t < 1 / 2) {
-				return q;
-			}
-			if (t < 2 / 3) {
-				return p + (q - p) * (2 / 3 - t) * 6;
-			}
-			return p;
-		}
-
-		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-		var p = 2 * l - q;
-
-		if (s === 0) {
-			r = 1;
-			g = 1;
-			b = 1; // achromatic
-		} else {
-
-			r = hue2rgb(p, q, h + 1 / 3);
-			g = hue2rgb(p, q, h);
-			b = hue2rgb(p, q, h - 1 / 3);
-		}
-
-		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 	}
 
 	function draw_mandelbrot(max_iterations_supplied = false) {
@@ -169,6 +112,61 @@ function mandelbrot(canvas) {
 
 		draw_mandelbrot();
 		update_url_without_refreshing_page();
+	}
+
+
+	function get_parameters_from_url(vars, url) {
+		// from https://html-online.com/articles/get-url-parameters-javascript/
+		var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+			vars[key] = value;
+		});
+		return vars;
+	}
+
+	function update_url_without_refreshing_page() {
+		console.log(a)
+		// https://computerrock.com/blog/html5-changing-the-browser-url-without-refreshing-page/
+		window.history.replaceState("object or string", "Title", "?x=" + a.x + "&y=" + a.y + "&zoom=" + a.zoom+ "&w=" + a.w + "&h=" + a.h + "&max_iterations=" + a.max_iterations );
+	}
+
+	function hsl_to_rgb(h, s, l) {
+		var r;
+		var g;
+		var b;
+		function hue2rgb(p, q, t) {
+			if (t < 0) {
+				t += 1;
+			}
+			if (t > 1) {
+				t -= 1;
+			}
+			if (t < 1 / 6) {
+				return p + (q - p) * 6 * t;
+			}
+			if (t < 1 / 2) {
+				return q;
+			}
+			if (t < 2 / 3) {
+				return p + (q - p) * (2 / 3 - t) * 6;
+			}
+			return p;
+		}
+
+		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+		var p = 2 * l - q;
+
+		if (s === 0) {
+			r = 1;
+			g = 1;
+			b = 1; // achromatic
+		} else {
+
+			r = hue2rgb(p, q, h + 1 / 3);
+			g = hue2rgb(p, q, h);
+			b = hue2rgb(p, q, h - 1 / 3);
+		}
+
+		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 	}
 
 	main();

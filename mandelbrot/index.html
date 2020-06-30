@@ -1,10 +1,11 @@
-<!-- This mandelbrot takes all its parameters from the url and also updates the url which is neat
-but this prevents it from being embedded in a larger website with other items -->
 <canvas></canvas>
 <script src="mandelbrot.js"></script>
 <script>
+  mandelbrot(document.querySelector("canvas"));
+</script>
 
-/*
+
+<!-- 
 Nice places
 file:///Users/Nick/code/nicolas42.github.io/mandelbrot/index.html?x=-0.027285156250000026&y=0.6443066406250001&zoom=2048
 file:///Users/Nick/code/nicolas42.github.io/mandelbrot/index.html?x=-0.027120712995529206&y=0.6441158065199851&zoom=67108864
@@ -19,8 +20,4 @@ https://nicolas42.github.io/mandelbrot/?x=0.38715883594200756&y=-0.2587413487062
 https://nicolas42.github.io/mandelbrot/?x=0.32898730468750015&y=-0.4237490234374998&zoom=16384
 file:///Users/Nick/code/nicolas42.github.io/mandelbrot/index.html?x=-1.7664619022752155&y=0.041740019425749834&zoom=1073741824&w=800&h=800&max_iterations=855
 
-
-*/
-
-  mandelbrot(document.querySelector("canvas"));
-</script>
+ -->
