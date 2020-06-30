@@ -1,173 +1,107 @@
-function mandelbrot(canvas) {
-	"use strict";
+function draw_mandelbrot(canvas, mandelbrot_entity) {
 
-	// This mandelbrot takes all its parameters from the url and also updates the url which is neat
-	// but this prevents it from being embedded in a larger website with other items
+    let math_x = mandelbrot_entity.x;
+    let math_y = mandelbrot_entity.y;
+    let zoom   = mandelbrot_entity.zoom;
 
-	// optionally take arguments from url
-	// draws mandelbrot image
-	// register event handlers for left and right mouse clicks
-	// left click zooms in right click zooms out
+    var img = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
 
-	var img, a;
+    let max_iterations = (255 + (20 * Math.log2(zoom)));    
 
-	function main() {
+    let black = [0, 0, 0, 255];
+    let stride = 4;
 
-		// default parameters
-		a = { x: 0, y: 0, zoom: 1, w: 500, h: 500}
-		get_parameters_from_url(a, window.location.href)
+    // make black image
+    for (var i = 0; i < img.data.length; i += stride) {
+        img.data[i + 0] = black[0];
+        img.data[i + 1] = black[1];
+        img.data[i + 2] = black[2];
+        img.data[i + 3] = black[3];
+    }
 
-		canvas.width = a.w;
-		canvas.height = a.h;
-		// get image from canvas
-		img = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
+    // main loop
+    for (var y = 0; y < img.height; y += 1) {
+        for (var x = 0; x < img.width; x += 1) {
 
-		draw_mandelbrot(true);
-		update_url_without_refreshing_page();
-		// respond to left and right mouse clicks
-		canvas.addEventListener("mousedown", on_mousedown, false);
-		// disable context menu
-		canvas.addEventListener("contextmenu", (e) => { e.preventDefault(); });
+            let math_height = 4 / zoom;
+            let math_width = 4 / zoom;
 
-	}
+            // get math point from image point
+            // image is flipped vertically. numbers go up, pixels go down. i don't care.
+            var cx = (math_x - math_width / 2) + x * (math_width / img.width);
+            var cy = (math_y - math_height / 2) + y * (math_width / img.width);
+            var zx = 0;
+            var zy = 0;
 
-	function draw_mandelbrot(max_iterations_supplied = false) {
+            var i;
+            var in_set = true;
+            for (i = 1; i <= max_iterations; i += 1) {
+                var zxtemp = zx * zx - zy * zy + cx;
+                zy = 2 * zx * zy + cy;
+                zx = zxtemp;
+                // if length of complex vector exceeds 4 then 
+                // assume the pixel is not in the set
+                if (zx * zx + zy * zy > 4) {
+                    in_set = false;
+                    break;
+                }
+            }
 
-		// the first time the page is loaded max_iterations can be overrided with a url parameter
-		if (max_iterations_supplied === false || typeof a.max_iterations === "undefined") {
-			a.max_iterations = (255 + (20 * Math.log2(a.zoom)));
-		}
-		
-
-		var black = [0, 0, 0, 255];
-		var stride = 4;
-
-		var x, y, zx, zxtemp, zy, cx, cy, rgb, i, in_set, pos;
-		var math_height = 4 / a.zoom;
-		var math_width = 4 / a.zoom;
-
-		// make black image
-		for (i = 0; i < img.data.length; i += stride) {
-			img.data[i + 0] = black[0];
-			img.data[i + 1] = black[1];
-			img.data[i + 2] = black[2];
-			img.data[i + 3] = black[3];
-		}
-
-		// main loop
-		for (y = 0; y < img.height; y += 1) {
-			for (x = 0; x < img.width; x += 1) {
-				// get math point from image point
-				cx = (a.x - math_width / 2) + x * (math_width / img.width);
-				cy = (a.y - math_height / 2) + y * (math_width / img.width);
-				// image is flipped vertically. numbers go up, pixels go down. who cares
-				zx = 0;
-				zy = 0;
-
-				in_set = true;
-				for (i = 1; i <= a.max_iterations; i += 1) {
-					zxtemp = zx * zx - zy * zy + cx;
-					zy = 2 * zx * zy + cy;
-					zx = zxtemp;
-					if (zx * zx + zy * zy > 4) {
-						in_set = false;
-						break;
-					}
-				}
-
-				if (in_set === false) {
-					pos = y * img.width * stride + x * stride;
-					rgb = hsl_to_rgb((i % 255) / 255, 1, 0.5);
-					img.data[pos + 0] = rgb[0];
-					img.data[pos + 1] = rgb[1];
-					img.data[pos + 2] = rgb[2];
-					// img.data[pos + 3] = rgb[3]; // don't mess with opacity
-				}
-			}
-		}
-		canvas.getContext("2d").putImageData(img, 0, 0);
-		console.log(a.max_iterations)
-	}
+            // color in pixel
+            if (in_set === false) {
+                var pos = y * img.width * stride + x * stride;
+                // hue is determined by the number of iterations taken
+                var rgb = hsl_to_rgb((i % 255) / 255, 1, 0.5);
+                img.data[pos + 0] = rgb[0];
+                img.data[pos + 1] = rgb[1];
+                img.data[pos + 2] = rgb[2];
+                // img.data[pos + 3] = rgb[3]; // don't mess with opacity
+            }
 
 
-	var on_mousedown = function (e) {
-		if (e.which === 1) {
-			// get clicked position of mouse cursor
-			var rect = e.currentTarget.getBoundingClientRect();
-			var x_pixel = e.clientX - rect.left;
-			var y_pixel = e.clientY - rect.top;
-
-			var math_height = 4 / a.zoom;
-			var math_width = 4 / a.zoom;
-
-			// update globals
-			a.x = (a.x - math_width / 2) + x_pixel / (img.width / math_width);
-			a.y = (a.y - math_height / 2) + y_pixel / (img.height / math_height);
-			a.zoom *= 2;
-
-		} else if (e.which === 3) { // right click
-			// update global
-			a.zoom /= 2;
-		}
-
-		draw_mandelbrot();
-		update_url_without_refreshing_page();
-	}
-
-
-	function get_parameters_from_url(vars, url) {
-		// from https://html-online.com/articles/get-url-parameters-javascript/
-		var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-			vars[key] = value;
-		});
-		return vars;
-	}
-
-	function update_url_without_refreshing_page() {
-		console.log(a)
-		// https://computerrock.com/blog/html5-changing-the-browser-url-without-refreshing-page/
-		window.history.replaceState("object or string", "Title", "?x=" + a.x + "&y=" + a.y + "&zoom=" + a.zoom+ "&w=" + a.w + "&h=" + a.h + "&max_iterations=" + a.max_iterations );
-	}
-
-	function hsl_to_rgb(h, s, l) {
-		var r;
-		var g;
-		var b;
-		function hue2rgb(p, q, t) {
-			if (t < 0) {
-				t += 1;
-			}
-			if (t > 1) {
-				t -= 1;
-			}
-			if (t < 1 / 6) {
-				return p + (q - p) * 6 * t;
-			}
-			if (t < 1 / 2) {
-				return q;
-			}
-			if (t < 2 / 3) {
-				return p + (q - p) * (2 / 3 - t) * 6;
-			}
-			return p;
-		}
-
-		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-		var p = 2 * l - q;
-
-		if (s === 0) {
-			r = 1;
-			g = 1;
-			b = 1; // achromatic
-		} else {
-
-			r = hue2rgb(p, q, h + 1 / 3);
-			g = hue2rgb(p, q, h);
-			b = hue2rgb(p, q, h - 1 / 3);
-		}
-
-		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-	}
-
-	main();
+        }
+    }
+    canvas.getContext("2d").putImageData(img, 0, 0);
 }
+
+function hsl_to_rgb(h, s, l) {
+    let r;
+    let g;
+    let b;
+    function hue2rgb(p, q, t) {
+        if (t < 0) {
+            t += 1;
+        }
+        if (t > 1) {
+            t -= 1;
+        }
+        if (t < 1 / 6) {
+            return p + (q - p) * 6 * t;
+        }
+        if (t < 1 / 2) {
+            return q;
+        }
+        if (t < 2 / 3) {
+            return p + (q - p) * (2 / 3 - t) * 6;
+        }
+        return p;
+    }
+
+    let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    let p = 2 * l - q;
+
+    if (s === 0) {
+        r = 1;
+        g = 1;
+        b = 1; // achromatic
+    } else {
+
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+
