@@ -1,10 +1,7 @@
 
-
 function demo()
 {
-    let canvas = document.querySelector('canvas')
-    canvas.width = 500;
-    canvas.height = 500;
+
 
     var places_index = 0;
     let places = [
@@ -23,12 +20,6 @@ function demo()
         { x: -1.7664619022752155, y: 0.041740019425749834, zoom: 1073741824, w: 800, h: 800, max_iterations: 855 },
     ]
 
-
-    function draw_place() {
-        mandelbrot_entity = places[places_index];
-        draw_mandelbrot(canvas, mandelbrot_entity);
-    }
-
     function get_parameters_from_url(vars, url) {
 		// from https://html-online.com/articles/get-url-parameters-javascript/
 		var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
@@ -37,9 +28,40 @@ function demo()
 		return vars;
     }
 
-    var mandelbrot_entity = { x: -0.6999687500000003, y: -0.2901249999999999, zoom: 1024 };
+    function update_url_without_refreshing_page(mandelbrot_entity) {
+        var m = mandelbrot_entity;
+        console.log(m)
+		// https://computerrock.com/blog/html5-changing-the-browser-url-without-refreshing-page/
+		window.history.replaceState("object or string", "Title", "?x=" + m.x + "&y=" + m.y + "&zoom=" + m.zoom+ "&w=" + m.w + "&h=" + m.h + "&max_iterations=" + m.max_iterations );
+	}
+
+
+    // defaults
+    var mandelbrot_entity = { x: -0.6999687500000003, y: -0.2901249999999999, zoom: 1024, w: 500, h: 500 };
+    mandelbrot_entity.max_iterations = (255 + (20 * Math.log2(mandelbrot_entity.zoom))); 
     get_parameters_from_url(mandelbrot_entity, window.location.href)
-    draw_place();
+
+    let canvas = document.querySelector('canvas')
+    canvas.height = mandelbrot_entity.h; 
+    canvas.width = mandelbrot_entity.w; 
+    update_url_without_refreshing_page(mandelbrot_entity);
+    // mandelbrot_entity.max_iterations = (255 + (20 * Math.log2(mandelbrot_entity.zoom))); 
+    draw_mandelbrot(canvas, mandelbrot_entity);
+
+    function draw_mandelbrot_and_do_the_other_things(canvas, mandelbrot_entity)
+    {
+        update_url_without_refreshing_page(mandelbrot_entity);
+        mandelbrot_entity.max_iterations = (255 + (20 * Math.log2(mandelbrot_entity.zoom))); 
+        draw_mandelbrot(canvas, mandelbrot_entity);
+    }
+
+    function draw_place() {        
+        for (var key in places[places_index]) {
+            mandelbrot_entity[key] = places[places_index][key]; 
+        }
+        draw_mandelbrot_and_do_the_other_things(canvas, mandelbrot_entity)
+    }
+
 
     // Event Code
     var on_mousedown = function (e) {
@@ -64,8 +86,12 @@ function demo()
         } else if (e.which === 3) { // right click
             zoom /= 2;
         }
-        mandelbrot_entity = {x: x, y: y, zoom: zoom};
-        draw_mandelbrot(canvas, {x: x, y: y, zoom: zoom});
+
+
+        let max_iterations = (255 + (20 * Math.log2(zoom))); 
+        mandelbrot_entity = {x: x, y: y, zoom: zoom, w: canvas.width, h: canvas.height, max_iterations: max_iterations};
+        draw_mandelbrot_and_do_the_other_things(canvas, mandelbrot_entity)
+
     }
 
     canvas.addEventListener("mousedown", on_mousedown, false);
