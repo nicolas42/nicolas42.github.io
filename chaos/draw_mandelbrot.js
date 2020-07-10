@@ -1,11 +1,54 @@
 function draw_mandelbrot(canvas, m) {
 
+
+    function hsl_to_rgb(h, s, l) {
+        let r;
+        let g;
+        let b;
+        function hue2rgb(p, q, t) {
+            if (t < 0) {
+                t += 1;
+            }
+            if (t > 1) {
+                t -= 1;
+            }
+            if (t < 1 / 6) {
+                return p + (q - p) * 6 * t;
+            }
+            if (t < 1 / 2) {
+                return q;
+            }
+            if (t < 2 / 3) {
+                return p + (q - p) * (2 / 3 - t) * 6;
+            }
+            return p;
+        }
+
+        let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        let p = 2 * l - q;
+
+        if (s === 0) {
+            r = 1;
+            g = 1;
+            b = 1; // achromatic
+        } else {
+
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+
+
+
     var img = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
 
     // main loop
     for (var y = 0; y < img.height; y += 1) {
         for (var x = 0; x < img.width; x += 1) {
-        
+
             // get math point from image point
             // image is flipped vertically. numbers go up, pixels go down. i don't care.
             let h = 4 / m.zoom;
@@ -53,45 +96,3 @@ function draw_mandelbrot(canvas, m) {
     }
     canvas.getContext("2d").putImageData(img, 0, 0);
 }
-
-function hsl_to_rgb(h, s, l) {
-    let r;
-    let g;
-    let b;
-    function hue2rgb(p, q, t) {
-        if (t < 0) {
-            t += 1;
-        }
-        if (t > 1) {
-            t -= 1;
-        }
-        if (t < 1 / 6) {
-            return p + (q - p) * 6 * t;
-        }
-        if (t < 1 / 2) {
-            return q;
-        }
-        if (t < 2 / 3) {
-            return p + (q - p) * (2 / 3 - t) * 6;
-        }
-        return p;
-    }
-
-    let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    let p = 2 * l - q;
-
-    if (s === 0) {
-        r = 1;
-        g = 1;
-        b = 1; // achromatic
-    } else {
-
-        r = hue2rgb(p, q, h + 1 / 3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1 / 3);
-    }
-
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
-
-
