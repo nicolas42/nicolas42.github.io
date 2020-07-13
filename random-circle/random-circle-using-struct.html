@@ -14,25 +14,25 @@ settransform https://www.w3schools.com/tags/canvas_settransform.asp
 
 
 <canvas></canvas>
-
 <script>
 
-function draw_circle_pattern(canvas, angle, color, max_distance, scale, line_width, step)
+function draw_circle_pattern(a)
 {
+    
 
-    let ctx = canvas.getContext('2d');
+    let ctx = a.canvas.getContext('2d');
 
     ctx.setTransform(); // reset all transforms
 
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, a.canvas.width, a.canvas.height);
 
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.scale(scale, scale);
+    ctx.translate(a.canvas.width / 2, a.canvas.height / 2);
+    ctx.scale(a.scale, a.scale);
 
-    for (let distance = 0; distance < max_distance; distance += step) {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = line_width;
+    for (let distance = 0; distance < a.max_distance; distance += 1) {
+        ctx.strokeStyle = a.color;
+        ctx.lineWidth = a.line_width;
 
         ctx.beginPath();
         ctx.moveTo(0, 0);
@@ -40,7 +40,7 @@ function draw_circle_pattern(canvas, angle, color, max_distance, scale, line_wid
         ctx.stroke();
 
         ctx.translate(0, distance);
-        ctx.rotate(angle);
+        ctx.rotate(a.angle);
     }
 }
 
@@ -49,21 +49,22 @@ function random_color()
     return "#" + Math.floor(Math.random() * 16777216).toString(16);
 }
 
+a = { 
+    canvas: document.querySelector('canvas'),
+    angle: Math.random() * 2 * Math.PI,
+    color: random_color(),
+    max_distance: 500,
+    scale: 1,
+    line_width: 2,
+    step: 1
+}
 
-let canvas = document.querySelector('canvas');
-canvas.width = 800;
-canvas.height = 800;
+a.canvas.width = 800,
+a.canvas.height = 800,
 
-
-var angle = Math.random() * 2 * Math.PI;
-var max_distance = 500;
-var scale = 1;
-var line_width = 2;
-var step = 1;
-draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
+draw_circle_pattern(a);
 
 </script>
-
 
 
 
@@ -71,8 +72,8 @@ draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_wid
 <input  id="angle_slider" style="width:800px" type="range" min="1" max="10000" value="5000">
 <script>
 document.querySelector("#angle_slider").oninput = function () {
-    angle = this.value / 10000 * 2 * Math.PI;
-    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
+    a.angle = this.value / 10000 * 2 * Math.PI;
+    draw_circle_pattern(a);
 }
 </script>
 
@@ -82,8 +83,8 @@ document.querySelector("#angle_slider").oninput = function () {
 <input  id="scale_slider" style="width:800px" type="range" min="1" max="200" value="100">
 <script>
 document.querySelector("#scale_slider").oninput = function () {
-    scale = this.value / 100;
-    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
+    a.scale = this.value / 100;
+    draw_circle_pattern(a);
 }
 </script>
 
@@ -93,11 +94,10 @@ document.querySelector("#scale_slider").oninput = function () {
 <input  id="max_distance_slider" style="width:800px" type="range" min="1" max="1000" value="500">
 <script>
 document.querySelector("#max_distance_slider").oninput = function () {
-    max_distance = this.value;
-    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
+    a.max_distance = this.value;
+    draw_circle_pattern(a);
 }
 </script>
-
 
 
 
