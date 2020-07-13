@@ -6,12 +6,16 @@ To reset transforms caused by translate and rotate use setTransform.
 Calling ctx.setTransform without any parameters will reset all of the previous transformations.
 settransform https://www.w3schools.com/tags/canvas_settransform.asp
  -->
-<html>
-<canvas></canvas>
-<input style="width:800px" type="range" min="1" max="100" value="50" class="slider" id="slider">
-<body>
-<script>
 
+ <html>
+<body>
+
+
+
+<!-- ========================== Circle ============================== -->
+
+<canvas></canvas>
+<script>
 
 function draw_circular_pattern(canvas, angle, color)
 {
@@ -46,11 +50,18 @@ canvas.height = 800;
 
 
 var angle = Math.random() * 2 * Math.PI;
-var color = "#" + Math.floor(Math.random() * 16777216).toString(16);
+var color = "#" + Math.floor(Math.random() * 16777216).toString(16); // 16777216 == 2^24
 draw_circular_pattern(canvas, angle, color);
 
+</script>
 
-var slider = document.getElementById("slider");
+
+
+<!-- ========================== Slider ============================== -->
+
+<input  id="slider" style="width:800px" type="range" min="1" max="100" value="50">
+<script>
+var slider = document.querySelector("#slider");
 slider.oninput = function () {
     console.log(this.value);
 
@@ -60,7 +71,9 @@ slider.oninput = function () {
     draw_circular_pattern(canvas, angle, color);
 }
 
-
 </script>
+
+
+
 </body>
-</canvas>
+</html>
