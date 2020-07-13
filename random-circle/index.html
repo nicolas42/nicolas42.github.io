@@ -13,7 +13,7 @@ settransform https://www.w3schools.com/tags/canvas_settransform.asp
 
 
 
-<canvas></canvas>
+<canvas></canvas><br>
 
 <script>
 
@@ -66,6 +66,16 @@ draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_wid
 
 
 
+<script>
+canvas.onwheel = function(event)
+{
+    event.preventDefault();
+    angle += event.deltaY / 100000 * 2 * Math.PI;
+    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
+
+}
+</script>
+
 
 
 <input  id="angle_slider" style="width:800px" type="range" min="1" max="10000" value="5000">
@@ -97,7 +107,6 @@ document.querySelector("#max_distance_slider").oninput = function () {
     draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
 }
 </script>
-
 
 
 
