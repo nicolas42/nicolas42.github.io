@@ -1,0 +1,42 @@
+
+<!-- from https://slicker.me/javascript/turtle.htm -->
+<html>
+<!-- <style>
+  body {
+    background-color: black;
+  }
+</style> -->
+<canvas style="background-color: black;"; id='random_circle' width='800' height='800'></canvas>
+
+<body>
+  <script>
+
+    let draw_random_circle = function (element)
+    {
+      let random_angle = Math.random() * 2 * Math.PI;
+      let random_color = "#" + Math.floor(Math.random() * 16777216).toString(16);
+
+      let context = canvas.getContext('2d');
+      context.scale(.5, .5);
+      context.translate(canvas.width, canvas.height);
+
+      for (let i = 0; i < 500; i++) {
+        context.strokeStyle = random_color;
+        context.lineWidth = 3;
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(0, i);
+        context.stroke();
+        context.translate(0, i);
+        context.rotate(random_angle);
+      }
+
+    }
+
+
+    let canvas = document.getElementById('random_circle');
+    draw_random_circle(canvas);
+
+  </script>
+</body>
+</canvas>
