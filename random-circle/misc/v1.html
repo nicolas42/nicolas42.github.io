@@ -1,14 +1,13 @@
-<!-- 
-credit https://slicker.me/javascript/turtle.htm
-canvas ref https://www.w3schools.com/tags/ref_canvas.asp
-
-To reset transforms caused by translate and rotate use setTransform.
-Calling ctx.setTransform without any parameters will reset all of the previous transformations.
-settransform https://www.w3schools.com/tags/canvas_settransform.asp
- -->
+<!-- from https://slicker.me/javascript/turtle.htm -->
+<!-- https://www.w3schools.com/tags/ref_canvas.asp -->
 <html>
+<!-- <style>
+body {
+background-color: black;
+}
+</style> -->
 <canvas></canvas>
-<input style="width:800px" type="range" min="1" max="100" value="50" class="slider" id="slider">
+
 <body>
 <script>
 
@@ -17,7 +16,7 @@ function draw_circular_pattern(canvas, angle, color)
 {
     let ctx = canvas.getContext('2d');
 
-    ctx.setTransform(); // reset all transforms
+    ctx.setTransform(); // reset translation and rotation transforms
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -39,26 +38,15 @@ function draw_circular_pattern(canvas, angle, color)
     }
 }
 
-
 let canvas = document.querySelector('canvas');
 canvas.width = 800;
 canvas.height = 800;
 
-
 var angle = Math.random() * 2 * Math.PI;
 var color = "#" + Math.floor(Math.random() * 16777216).toString(16);
+
 draw_circular_pattern(canvas, angle, color);
 
-
-var slider = document.getElementById("slider");
-slider.oninput = function () {
-    console.log(this.value);
-
-    var angle = this.value / 100 * 2 * Math.PI;
-    var color = "#" + Math.floor(Math.random() * 16777216).toString(16);
-
-    draw_circular_pattern(canvas, angle, color);
-}
 
 
 </script>
