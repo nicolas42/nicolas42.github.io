@@ -5,34 +5,41 @@ canvas ref https://www.w3schools.com/tags/ref_canvas.asp
 To reset transforms caused by translate and rotate use setTransform.
 Calling ctx.setTransform without any parameters will reset all of the previous transformations.
 settransform https://www.w3schools.com/tags/canvas_settransform.asp
- -->
 
- <html>
+
+{ "angle": 4.189447708568463, "color": "#fc8a38", "max_distance": 500, "scale": 1, "line_width": 2, "step": 1 }
+
+
+-->
+
+<html>
+    <head><style> body { max-width: 800px; }; </style></head>
 <body>
-
-
-
-
-<canvas></canvas><br>
-
+<canvas></canvas>
+<p></p>
+<input type="checkbox" checked>random color</input>
+<input  id="angle_slider" style="width:800px" type="range" min="1" max="10000" value="5000">
+<input  id="scale_slider" style="width:800px" type="range" min="1" max="200" value="100">
+<input  id="max_distance_slider" style="width:800px" type="range" min="1" max="1000" value="500">
 <script>
 
-function draw_circle_pattern(canvas, angle, color, max_distance, scale, line_width, step)
+function show_pattern(canv, patt)
 {
+    
 
-    let ctx = canvas.getContext('2d');
+    let ctx = canv.getContext('2d');
 
     ctx.setTransform(); // reset all transforms
 
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canv.width, canv.height);
 
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.scale(scale, scale);
+    ctx.translate(canv.width / 2, canv.height / 2);
+    ctx.scale(patt.scale, patt.scale);
 
-    for (let distance = 0; distance < max_distance; distance += step) {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = line_width;
+    for (let distance = 0; distance < patt.max_distance; distance += 1) {
+        ctx.strokeStyle = patt.color;
+        ctx.lineWidth = patt.line_width;
 
         ctx.beginPath();
         ctx.moveTo(0, 0);
@@ -40,75 +47,67 @@ function draw_circle_pattern(canvas, angle, color, max_distance, scale, line_wid
         ctx.stroke();
 
         ctx.translate(0, distance);
-        ctx.rotate(angle);
+        ctx.rotate(patt.angle);
     }
 }
 
-function random_color()
+function make_random_color()
 {
     return "#" + Math.floor(Math.random() * 16777216).toString(16);
 }
 
 
-let canvas = document.querySelector('canvas');
+
+
+// ============== Globals ==================
+var canvas = document.querySelector('canvas');
 canvas.width = 800;
 canvas.height = 800;
 
 
-var angle = Math.random() * 2 * Math.PI;
-var max_distance = 500;
-var scale = 1;
-var line_width = 2;
-var step = 1;
-draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
+var pattern = { 
+    angle: Math.random() * 2 * Math.PI,
+    color: make_random_color(),
+    max_distance: 500,
+    scale: 1,
+    line_width: 2,
+    step: 1
+}
 
-</script>
+
+function show_with_random_color()
+{
+    if (document.querySelector('input').checked){ pattern.color = make_random_color(); }
+    show_pattern(canvas, pattern);
+    document.querySelector('p').innerHTML = JSON.stringify(pattern, null, 4)
+}
+
+show_with_random_color();
 
 
-
-<script>
 canvas.onwheel = function(event)
 {
     event.preventDefault();
-    angle += event.deltaY / 100000 * 2 * Math.PI;
-    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
-
+    pattern.angle += event.deltaY / 100000 * 2 * Math.PI;
+    show_with_random_color();
 }
-</script>
 
 
-
-<input  id="angle_slider" style="width:800px" type="range" min="1" max="10000" value="5000">
-<script>
 document.querySelector("#angle_slider").oninput = function () {
-    angle = this.value / 10000 * 2 * Math.PI;
-    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
-}
-</script>
+    pattern.angle = this.value / 10000 * 2 * Math.PI;
+    show_with_random_color();}
 
 
-
-
-<input  id="scale_slider" style="width:800px" type="range" min="1" max="200" value="100">
-<script>
 document.querySelector("#scale_slider").oninput = function () {
-    scale = this.value / 100;
-    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
-}
-</script>
+    pattern.scale = this.value / 100;
+    show_with_random_color();}
 
 
-
-
-<input  id="max_distance_slider" style="width:800px" type="range" min="1" max="1000" value="500">
-<script>
 document.querySelector("#max_distance_slider").oninput = function () {
-    max_distance = this.value;
-    draw_circle_pattern(canvas, angle, random_color(), max_distance, scale, line_width, step);
-}
+    pattern.max_distance = this.value;
+    show_with_random_color();}
+
+
 </script>
-
-
-
 </body>
 </html>
