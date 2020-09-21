@@ -88,7 +88,7 @@ show_with_random_color();
 canvas.onwheel = function(event)
 {
     event.preventDefault();
-    pattern.angle += event.deltaY / 100000 * 2 * Math.PI;
+    pattern.angle += event.deltaY / 1000000 * 2 * Math.PI;
     show_with_random_color();
 }
 
