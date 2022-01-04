@@ -1,5 +1,10 @@
 # nicolas42.github.io
 
+[calculator](calculator)
+
+[/calculator/](/calculator/)
+
+[https://nicolas42.github.io/calculator/](https://nicolas42.github.io/calculator/)
 
 [https://nicolas42.github.io/cut_down_version/circle/](https://nicolas42.github.io/cut_down_version/circle/)
 
