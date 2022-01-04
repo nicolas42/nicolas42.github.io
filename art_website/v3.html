@@ -1,0 +1,52 @@
+
+<!doctype html>
+
+<div id="black_background"></div>
+<img src="art/09vg982y7cx61.jpg"> <img src="art/7m9i7ky8r9n71.jpg"> <img src="art/n0uvu60msu071.jpg"> <img src="art/0g70sx8i0np71.jpg"> <img src="art/7tct14o12fd71.jpg"> <img src="art/o25o7elis5w71.jpg"> <img src="art/0gi8sar8x6s71.jpg"> <img src="art/8y0h5a12vkt71.jpg"> <img src="art/o4mfja515bz61.jpg"> <img src="art/26nltuw2mob71.jpg"> <img src="art/8yz6bpbxpaj71.jpg"> <img src="art/pxh1eqtrep471.jpg"> <img src="art/2a1sv2hc38u71.jpg"> <img src="art/a7yey79k1l771.jpg"> <img src="art/s3mn4tdixuu01.jpg"> <img src="art/2bveaqeotxc71.jpg"> <img src="art/atn1kb23dt271.jpg"> <img src="art/s73j8uhyc6c51.jpg"> <img src="art/2o7hh3qs71571.jpg"> <img src="art/c0pktgp5kyb71.jpg"> <img src="art/sf7b4wezscm71.jpg"> <img src="art/2ua756hpbol71.jpg"> <img src="art/cf5hqw4lkhu71.jpg"> <img src="art/swf3yzc0g1q71.jpg"> <img src="art/2vt8wq04s9q71.jpg"> <img src="art/f2ao5nvwn5o71.jpg"> <img src="art/swioo9eqgan61.jpg"> <img src="art/32jletmw69c71.jpg"> <img src="art/g6m6ttvglmf71.jpg"> <img src="art/u4rb76qp1up71.jpg"> <img src="art/3fwlnxd8phv71.jpg"> <img src="art/gfcbng8f4i671.jpg"> <img src="art/uj8xhiy37a971.jpg"> <img src="art/3sxt8y7luhs71.jpg"> <img src="art/gq6czx7rvht71.jpg"> <img src="art/v5ev2x1auir71.jpg"> <img src="art/45z1bs0a5bo71.jpg"> <img src="art/ivbd5kv1qrw71.jpg"> <img src="art/vny0iyfh1mw71.jpg"> <img src="art/49qy6h8ayfu71.jpg"> <img src="art/j2llv1h638k61.jpg"> <img src="art/x686pzwxm9171.jpg"> <img src="art/4gm81thv3om71.jpg"> <img src="art/j5ruv6tc56w71.jpg"> <img src="art/xd7or54ouyb71.jpg"> <img src="art/6pq59qtnnsw61.jpg"> <img src="art/ja1eerxkc9351.jpg"> <img src="art/xr36wbpvyss71.jpg"> <img src="art/6pw4kvimd1e71.jpg"> <img src="art/jpq39wykwxp71.jpg"> <img src="art/xsoa766zyfw71.jpg"> <img src="art/7kbd4cvprq071.jpg"> <img src="art/jzs8n1r7bgo71.jpg"> <img src="art/7lb72gptsfp71.jpg"> <img src="art/m8lfn2xsom871.jpg"> 
+<script>
+
+// function  view_event(e){ console.dir(e); }
+// window.addEventListener("click", view_event);
+// window.addEventListener("keydown", view_event);
+var $ = function(query) { return document.querySelectorAll(query); }
+
+
+document.querySelectorAll('img').forEach( 
+    function(element) { element.style.height = '350px'; } 
+);
+
+
+black_background = document.getElementById('black_background');
+black_background.style.width = window.innerWidth.toString() + 'px';
+black_background.style.height = window.innerHeight.toString() + 'px';
+black_background.style.position = 'fixed';
+black_background.style.top = '0px';
+black_background.style.left = '0px';
+black_background.style.backgroundColor = 'black';
+black_background.style.display = 'none';
+black_background.style.zIndex = 1;
+
+
+document.querySelectorAll('img').forEach(
+    function(element){
+        element.addEventListener('click',
+            function(event){
+                if ( element.style.height === '350px' ) {
+                    element.style.position = 'fixed';
+                    element.style.top = '0px';
+                    element.style.left = '0px';
+                    element.style.zIndex = 10;
+                    element.style.height = window.innerHeight.toString() + 'px';
+                    black_background.style.display = 'block';
+                } else {
+                    element.style.zIndex = 0;
+                    element.style.position = 'relative';
+                    element.style.height = '350px';
+                    black_background.style.display = 'none';
+                }
+            }
+        );
+    }
+);
+
+</script>
