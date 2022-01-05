@@ -1,16 +1,10 @@
 # nicolas42.github.io
 
-[README.md](README.md) | 
-[SERVER.go](SERVER.go) | 
-[archive](archive) | 
 [art](art) | 
 [calculator](calculator) | 
 [cellular_automaton](cellular_automaton) | 
 [chaos](chaos) | 
-[circle](circle) | 
 [conway](conway) | 
-[css](css) | 
-[cut_down_version](cut_down_version) | 
 [deco1400](deco1400) | 
 [event](event) | 
 [examples](examples) | 
@@ -22,11 +16,8 @@
 [lets-get-classy](lets-get-classy) | 
 [mandelbrot](mandelbrot) | 
 [map](map) | 
-[mathjax](mathjax) | 
-[misc](misc) | 
-[readme.txt](readme.txt) | 
 [resize](resize) | 
 [s3](s3) | 
-[spiral](spiral) | 
+[turn](turn) | 
 [touch-swipe-detection](touch-swipe-detection) | 
 [youtube](youtube)
