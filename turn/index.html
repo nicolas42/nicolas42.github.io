@@ -2,7 +2,6 @@
 <STYLE> * { box-sizing: border-box; } </STYLE>
 <script>
 
-
 function stringify(sth)
 {
     return JSON.stringify(sth, function(key, val) { return val.toFixed ? Number(val.toFixed(10)) : val; }) // sets numbers to fixed length
@@ -84,7 +83,7 @@ function make_random_pattern()
     return { 
         angle: make_random_angle(),
         color: make_random_color(),
-        max_distance: 1000,
+        max_distance: 500,
         scale: 1,
         line_width: 1,
     }
@@ -101,28 +100,27 @@ function make_random_pattern()
     <input class="random" type="button" value="random">
     <input class="previous" type="button" value="previous">
     <input class="next" type="button" value="next">
+    <input class="start_stop" type="button" value="start_stop">
+    <input class="reverse_direction" type="button" value="reverse_direction">
+
     <input class="show_state_checkbox" type="checkbox">
 
     <input class="angle_slider" type="range" min="1" max="10000" value="5000">
     <input class="scale_slider" type="range" min="1" max="200" value="100">
-    <input class="max_distance_slider" type="range" min="1" max="2000" value="1000">
+    <input class="max_distance_slider" type="range" min="1" max="2000" value="500">
     <input class="line_width_slider" type="range" min="1" max="10" value="1">
     <br>
-
     <input class="input" type="text" style="width: 100%;" value="{angle: 2*Math.PI/3, color: '#2ae86f', max_distance: 500, scale: 1, line_width: 1}">
     <br>
-
-    <input class="start_stop" type="button" value="start_stop">
-    <input class="reverse_direction" type="button" value="reverse_direction">
-    <button onclick="play_pause('twelve_monkeys_mp3')">play_pause</button>
-    <button onclick="demo()">demo</button>
-    <audio id="twelve_monkeys_mp3"><source src="Paul Buckmaster - 12 monkeys-PPHqANTdXJw.opus" type="audio/mpeg"></audio>
+    <audio controls>
+        <source src="Paul Buckmaster - 12 monkeys-PPHqANTdXJw.opus" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <pre></pre>    
 </div>
 
 <script>
-
 
 // --------------------
 // Globals
@@ -139,12 +137,12 @@ let state = {
 
     show_state: 0,
     angle_delta: 1e-5,
-    get: ()=>{ return this.data[this.index]; },
+
 };
 
 
-// unfortunately I don't know a way to make event handler functions take parameters
-// So I use globals.
+
+
 
 
 function string_to_object(obj){
@@ -188,27 +186,16 @@ function reverse_direction() {
 }
 
 
-function demo()
-{
-    let audio = document.getElementById("twelve_monkeys_mp3");
-    audio.play()
-    state.animate = 1;
-    show(canvas, state);
-}
-
-function play_pause(audio_element_id)
-{
-    let audio_element = document.getElementById(audio_element_id);
-    if ( audio_element.paused ) {
-        audio_element.play();        
-    } else {
-        audio_element.pause();
-    }
-}
-
 function main()
 {
     show_random();
+
+    div.querySelector(".input").addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+            show_from_string(this.value);
+        }
+    });
+
 
     canvas.onclick = show_random;
     div.querySelector(".random").onclick = show_random;
@@ -217,15 +204,11 @@ function main()
     div.querySelector(".start_stop").onclick = start_stop;
     div.querySelector(".reverse_direction").onclick = reverse_direction;
 
-    div.querySelector(".angle_slider").oninput = function() { state.get().angle = this.value / 10000 * 2 * Math.PI; show(canvas, state); }
-    div.querySelector(".max_distance_slider").oninput = function() { state.get().max_distance = this.value; show(canvas, state); }
-    div.querySelector(".scale_slider").oninput = function() { state.get().scale = this.value / 100; show(canvas, state); }
-    div.querySelector(".line_width_slider").oninput = function() { state.get().line_width = this.value; show(canvas, state); }
-    div.querySelector(".show_state_checkbox").oninput = function() { state.get().show_state = this.checked; show(canvas, state); }
-
-    div.querySelector(".input").addEventListener("keyup", function(event) {
-        if (event.key === "Enter") { show_from_string(this.value); }
-    });
+    div.querySelector(".angle_slider").oninput = function() { state.data[state.index].angle = this.value / 10000 * 2 * Math.PI; show(canvas, state); }
+    div.querySelector(".max_distance_slider").oninput = function() { state.data[state.index].max_distance = this.value; show(canvas, state); }
+    div.querySelector(".scale_slider").oninput = function() { state.data[state.index].scale = this.value / 100; show(canvas, state); }
+    div.querySelector(".line_width_slider").oninput = function() { state.data[state.index].line_width = this.value; show(canvas, state); }
+    div.querySelector(".show_state_checkbox").oninput = function() { state.data[state.index].show_state = this.checked; show(canvas, state); }
 
 
 }
@@ -253,6 +236,33 @@ main();
 // ctx.fillText(the_text,0,0); // , canvas.width/2, canvas.height/2);
 
 
+
+
+
+
+// function play(audio_element_id)
+// {
+//     let audio_element = document.getElementById(audio_element_id);
+//     audio_element.play();
+// }
+
+// function demo()
+// {
+
+//     audio.play()
+//     state.animate = 1;
+//     show(canvas, state);
+// }
+
+// function play_pause(audio_element_id)
+// {
+//     let audio_element = document.getElementById(audio_element_id);
+//     if ( audio_element.paused ) {
+//         audio_element.play();        
+//     } else {
+//         audio_element.pause();
+//     }
+// }
 
 </script>
 
