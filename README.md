@@ -22,4 +22,19 @@
 [touch-swipe-detection](touch-swipe-detection) | 
 [youtube](youtube)
 
-![omg alt text](images/fractal.jpg)
+![alt](images/fractal.jpg)
+![alt](images/cell2.jpg)
+<!-- ![alt](images/chaos.jpg) -->
+![alt](images/conway.jpg)
+<!-- ![alt](images/daisies.jpg) -->
+![alt](images/katex.jpg)
+<!-- ![alt](images/mandelbrot1.jpg) -->
+![alt](images/mandelbrot2.jpg)
+<!-- ![alt](images/mandelbrot3.jpg) -->
+<!-- ![alt](images/mandelbrot4.jpg) -->
+<!-- ![alt](images/math_editor.jpg) -->
+![alt](images/orbit.jpg)
+<!-- ![alt](images/s3.jpg) -->
+![alt](images/spiral.jpg)
+![alt](images/tractor.jpg)
+<!-- ![alt](images/youtube.jpg) -->
