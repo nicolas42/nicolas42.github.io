@@ -15,6 +15,7 @@
 [katex_editor](katex_editor) | 
 [lets-get-classy](lets-get-classy) | 
 [mandelbrot](mandelbrot) | 
+[lots of mandelbrot](mandelbrot/lots.html) | 
 [map](map) | 
 [resize](resize) | 
 [s3](s3) | 
