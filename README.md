@@ -26,7 +26,7 @@
 ![alt](images/fractal.jpg)
 ![alt](images/cell2.jpg)
 <!-- ![alt](images/chaos.jpg) -->
-![alt](images/conway.jpg)
+![alt](images/conway1.jpg)
 <!-- ![alt](images/daisies.jpg) -->
 ![alt](images/katex.jpg)
 <!-- ![alt](images/mandelbrot1.jpg) -->
