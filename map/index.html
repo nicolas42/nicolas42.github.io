@@ -90,22 +90,20 @@ function main()
 {
     var gps_index = 0;
     var gps_stride = 100;
-    var gps_interval = 100; // ms
 
     var polyline = [];
     for (var i = 0; i < gps.length; i += gps_stride) { 
         polyline.push([gps[i + 1], gps[i + 0]]) 
     }
 
-    function move_point() {
-        draw_point({ latitude: gps[gps_index + 0], longitude: gps[gps_index + 1] });
-        gps_index = gps_index + gps_stride;
-    }
-
     initialize_map({ latitude: gps[0], longitude: gps[1], zoom: 20 });
     draw_polyline(polyline)
-    draw_point({ latitude: gps[gps_index + 0], longitude: gps[gps_index + 1] });
-    setInterval(move_point, gps_interval);
+
+    setInterval( function() {
+        draw_point({ latitude: gps[gps_index + 0], longitude: gps[gps_index + 1] });
+        gps_index += gps_stride;
+    }
+    , 100);
 }
 
 </script>
