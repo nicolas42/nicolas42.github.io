@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<!-- <style> body { margin: 0; padding: 0; } </style> -->
+<style>
+* { box-sizing: border-box; color: #333; font-weight: 400; }
+textarea { width: 100%; }
+div#contents { margin: 0 auto; max-width: 1000px; border: solid 1px #eeeeee; }
+</style>
+<div id="contents">
 <div id="mandelbrot">
     <div class="menu">
         <button class="prev">previous</button>
@@ -12,8 +17,9 @@
     </div>
     <canvas class="canvas"></canvas>
 </div>
+</div>
 
-<script> // draw_mandelbrot.js 
+<script> 
 
 function hue2rgb(p, q, t) {
     if (t < 0) {
@@ -72,7 +78,6 @@ function pixel_coordinates_to_mandelbrot_coordinate(canvas, mandelbrot, x, y)
     return [cx, cy]; 
 }
 
-
 function draw_mandelbrot(canvas, mandelbrot) {
 
     var im = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
@@ -130,7 +135,6 @@ function draw_mandelbrot(canvas, mandelbrot) {
     // return img;
 }
 
-
 </script>
 
 <script>
@@ -157,7 +161,7 @@ function main()
     var goto_button = div.querySelector(".goto");
     var input_field = div.querySelector(".input");
 
-    input_field.value = "{\"x\":-0.18801757812500003,\"y\":-0.8209140624999999,\"zoom\":8192,\"max_iterations\":1000}";
+    input_field.value = '{"x":-0.18801757812500003,"y":-0.8209140624999999,"zoom":8192,"max_iterations":1000}';
 
     var places_index = 0;
     var places = [
@@ -187,8 +191,8 @@ function main()
 
     // var mandelbrot = places[places_index];
     var fullscreen = 0;
-    var width = 500;
-    var height = 500;
+    var width = 400;
+    var height = 400;
     // mandelbrot = load_object_from_url(mandelbrot);
     
     canvas.width = width;
@@ -210,6 +214,9 @@ function main()
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;
 
+        console.log(x,y);
+        x = x * canvas.width / rect.width;
+        y = y * canvas.height / rect.height;
         [ places[places_index].x, places[places_index].y ] = pixel_coordinates_to_mandelbrot_coordinate(canvas, places[places_index], x, y);
 
         if (event.which === 1) {
@@ -257,8 +264,8 @@ function main()
         fullscreen = !fullscreen; 
         // console.log( fullscreen ); 
         if ( fullscreen ) {
-            canvas.width = window.innerWidth - 20;
-            canvas.height = window.innerHeight - 20;
+            canvas.width = 1000 - 20;
+            canvas.height = 1000 - 20;
         } else {
             canvas.width = width;
             canvas.height = height;
