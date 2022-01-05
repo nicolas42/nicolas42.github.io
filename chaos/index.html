@@ -1,11 +1,6 @@
-<html>
-
-<head>
-</head>
-
-<body>
-<canvas></canvas>
-<script>
+<!DOCTYPE html>
+<BODY><CANVAS></CANVAS></BODY>
+<SCRIPT>
 
 // x_n+1 = rx_n(1-x_n)
 function make_chaos(r)
@@ -26,7 +21,7 @@ canvas.height = 1000;
 canvas.width = 1400;
 
 var context = canvas.getContext("2d");
-// context.fillStyle = "#000000";
+context.fillStyle = "#000055";
 // context.fillRect(0, 0, a.w, a.h);
 
 
@@ -56,6 +51,4 @@ for ( var i = 0; i < y_points.length-1; i += 1 ){
 // 	    x: x + 3
 // 	]
 
-</script>
-</body>
-</html>
+</SCRIPT>
