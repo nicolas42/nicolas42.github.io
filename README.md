@@ -1,27 +1,27 @@
 # nicolas42.github.io
 
-[art](art) | 
-[calculator](calculator) | 
+[spiral](spiral) | 
 [cellular_automaton](cellular_automaton) | 
-[chaos](chaos) | 
 [conway](conway) | 
-[deco1400](deco1400) | 
-[event](event) | 
-[examples](examples) | 
-[f35](f35) | 
-[ganja](ganja) | 
-[js](js) | 
 [katex](katex) | 
 [katex_editor](katex_editor) | 
 [lets-get-classy](lets-get-classy) | 
 [mandelbrot](mandelbrot) | 
 [lots of mandelbrot](mandelbrot/lots.html) | 
-[map](map) | 
+[mapping](mapping) | 
+[deco1400](deco1400) | 
+[youtube](youtube)
+[art](art) | 
+[calculator](calculator) | 
+[chaos](chaos) | 
+[event](event) | 
+[examples](examples) | 
+<!-- [f35](f35) |  -->
+[ganja](ganja) | 
+[js](js) | 
 [resize](resize) | 
 [s3](s3) | 
-[turn](turn) | 
 [touch-swipe-detection](touch-swipe-detection) | 
-[youtube](youtube)
 
 ![alt](images/fractal.jpg)
 ![alt](images/cell2.jpg)
