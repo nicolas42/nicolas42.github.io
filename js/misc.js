@@ -64,3 +64,49 @@ function get_parameters_from_url() {
 //     // https://computerrock.com/blog/html5-changing-the-browser-url-without-refreshing-page/
 //     window.history.replaceState("object or string", "Title", "?x=" + m.x + "&y=" + m.y + "&zoom=" + m.zoom + "&w=" + m.w + "&h=" + m.h + "&max_iterations=" + m.max_iterations);
 // }
+
+
+
+
+
+
+// // FORM <=> OBJECT STUFF
+
+// function create_form_from_object(obj)
+// {
+//     let parent = document.createElement("div");
+//     for (key in obj) {
+//         // if ( isNaN(obj[key]) ) { console.log(key); continue; }
+//         let child = document.createElement("input");
+//         child.placeholder = name;
+//         child.type = "text";
+//         child.name = key;
+//         child.value = obj[key];
+//         // child.id = key;
+//         parent.appendChild(child);
+//         let br = document.createElement("br");
+//         parent.appendChild(br);
+//     }
+
+//     return parent;
+// }
+
+// function get_form(form)
+// {
+//     let obj = {}
+//     for (let i=0; i<form.children.length; i+=1 ) { 
+//         // if ( isNaN(obj[form.children[i].name]) ) { continue; }
+//         obj[form.children[i].name] = form.children[i].value;
+//     }
+//     return obj;
+// }
+
+// function set_form(form, obj)
+// {    
+//     let keys=Object.keys(obj); 
+//     for ( let i=0; i<keys.length; i+=1 ) { 
+//         // if ( isNaN(obj[keys[i]]) ) { continue; }
+//         form.children[i].value = obj[keys[i]];
+//     }
+//     return form;
+// }

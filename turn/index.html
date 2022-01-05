@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <script>
 
+
 function stringify(sth)
 {
     return JSON.stringify(sth, function(key, val) { return val.toFixed ? Number(val.toFixed(10)) : val; }) // sets numbers to fixed length
@@ -88,15 +89,6 @@ function make_random_pattern()
     }
 }
 
-function copy(obj) {
-
-    let cp = {}; 
-    for (key in obj) {
-        cp[key] = obj[key];
-    }
-    return cp;
-}
-
 </script>
 
 
@@ -105,11 +97,11 @@ function copy(obj) {
 <div id="spiral">
     <canvas class="canvas">click me</canvas>
     <br>
-    <input class="random_button" type="button" value="random_button">
-    <input class="previous_button" type="button" value="previous_button">
-    <input class="next_button" type="button" value="next_button">
-    <input class="start_stop_button" type="button" value="start_stop_button">
-    <input class="reverse_direction_button" type="button" value="reverse_direction_button">
+    <input class="random" type="button" value="random">
+    <input class="previous" type="button" value="previous">
+    <input class="next" type="button" value="next">
+    <input class="start_stop" type="button" value="start_stop">
+    <input class="reverse_direction" type="button" value="reverse_direction">
 
     <input class="show_state_checkbox" type="checkbox">
 
@@ -118,7 +110,7 @@ function copy(obj) {
     <input class="max_distance_slider" type="range" min="1" max="1000" value="500">
     <input class="line_width_slider" type="range" min="1" max="10" value="1">
     <br>
-    <input class="input" type="text" style="width: 100%;" value="{angle: TWOPI/3, color: '#2ae86f', max_distance: 500, scale: 1, line_width: 1}">
+    <input class="input" type="text" style="width: 100%;" value="{angle: 2*Math.PI/3, color: '#2ae86f', max_distance: 500, scale: 1, line_width: 1}">
     <br>
     <audio controls>
         <source src="Paul Buckmaster - 12 monkeys-PPHqANTdXJw.opus" type="audio/mpeg">
@@ -148,114 +140,75 @@ let state = {
 };
 
 
-
-// function create_form_from_object(obj)
-// {
-//     let parent = document.createElement("div");
-//     for (key in obj) {
-//         // if ( isNaN(obj[key]) ) { console.log(key); continue; }
-//         let child = document.createElement("input");
-//         child.placeholder = name;
-//         child.type = "text";
-//         child.name = key;
-//         child.value = obj[key];
-//         // child.id = key;
-//         parent.appendChild(child);
-//         let br = document.createElement("br");
-//         parent.appendChild(br);
-//     }
-
-//     return parent;
-// }
-
-// function get_form(form)
-// {
-//     let obj = {}
-//     for (let i=0; i<form.children.length; i+=1 ) { 
-//         // if ( isNaN(obj[form.children[i].name]) ) { continue; }
-//         obj[form.children[i].name] = form.children[i].value;
-//     }
-//     return obj;
-// }
-
-// function set_form(form, obj)
-// {    
-//     let keys=Object.keys(obj); 
-//     for ( let i=0; i<keys.length; i+=1 ) { 
-//         // if ( isNaN(obj[keys[i]]) ) { continue; }
-//         form.children[i].value = obj[keys[i]];
-//     }
-//     return form;
-// }
-
-
-
 function string_to_object(obj){
     return Function('"use strict";return (' + obj + ')')();
 }
 
-state.data.push(make_random_pattern());
-state.index = state.data.length-1;
-show(canvas, state);
+function show_from_string(str)
+{
+    let new_state = string_to_object(str);
+    state.data.push(new_state);
+    state.index = state.data.length-1;
+    show(canvas, state);
+}
 
-let TWOPI = 6.28318530718;
-div.querySelector(".input").addEventListener("keyup", function(event) {
-    if (event.key === "Enter") {
-        console.log("omg");
-        let new_state = string_to_object(this.value);
-        state.data.push(new_state);
-        state.index = state.data.length-1;
-        show(canvas, state);
-    }
-});
-
-
-canvas.onclick = function() { 
+function show_random()
+{
     state.data.push(make_random_pattern());
     state.index = state.data.length-1;
     show(canvas, state);
 }
 
-div.querySelector(".random_button").onclick = function() { 
-    state.data.push(make_random_pattern());
-    state.index = state.data.length-1;
-    show(canvas, state);
-}
-div.querySelector(".previous_button").onclick = function() { 
+function show_previous() { 
     state.index -= 1; if ( state.index < 0 ) { state.index = 0; } 
     show(canvas, state); 
 }
-div.querySelector(".next_button").onclick = function() { 
-    if ( state.index === state.data.length-1 ) { 
-        state.data.push(make_random_pattern());
-        state.index = state.data.length-1;
-    } else {
-        state.index += 1; 
-        if ( state.index > state.data.length-1 ) { state.index = state.data.length-1; } 
-    }
+
+function show_next() { 
+    state.index += 1; 
+    if ( state.index > state.data.length-1 ) { state.index = state.data.length-1; } 
     show(canvas, state); 
 }
-div.querySelector(".start_stop_button").onclick = function() { 
+
+function start_stop() { 
     if ( state.animate ) { state.animate = 0 } else { state.animate = 1 }
     show(canvas, state); 
 }
 
-div.querySelector(".reverse_direction_button").onclick = function() { 
+function reverse_direction() { 
     state.angle_delta = -state.angle_delta;
     show(canvas, state); 
 }
 
-div.querySelector(".angle_slider").oninput = function() { state.data[state.index].angle = this.value / 10000 * 2 * Math.PI; show(canvas, state); }
-div.querySelector(".max_distance_slider").oninput = function() { state.data[state.index].max_distance = this.value; show(canvas, state); }
-div.querySelector(".scale_slider").oninput = function() { state.data[state.index].scale = this.value / 100; show(canvas, state); }
-div.querySelector(".line_width_slider").oninput = function() { state.data[state.index].line_width = this.value; show(canvas, state); }
-div.querySelector(".show_state_checkbox").oninput = function() { state.data[state.index].show_state = this.checked; show(canvas, state); }
+
+function main()
+{
+    show_random();
+
+    div.querySelector(".input").addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+            show_from_string(this.value);
+        }
+    });
 
 
+    canvas.onclick = show_random;
+    div.querySelector(".random").onclick = show_random;
+    div.querySelector(".previous").onclick = show_previous;
+    div.querySelector(".next").onclick = show_next;
+    div.querySelector(".start_stop").onclick = start_stop;
+    div.querySelector(".reverse_direction").onclick = reverse_direction;
+
+    div.querySelector(".angle_slider").oninput = function() { state.data[state.index].angle = this.value / 10000 * 2 * Math.PI; show(canvas, state); }
+    div.querySelector(".max_distance_slider").oninput = function() { state.data[state.index].max_distance = this.value; show(canvas, state); }
+    div.querySelector(".scale_slider").oninput = function() { state.data[state.index].scale = this.value / 100; show(canvas, state); }
+    div.querySelector(".line_width_slider").oninput = function() { state.data[state.index].line_width = this.value; show(canvas, state); }
+    div.querySelector(".show_state_checkbox").oninput = function() { state.data[state.index].show_state = this.checked; show(canvas, state); }
 
 
+}
 
-
+main();
 
 // state.angle = Math.random() * 2 * Math.PI;
 // state.color = make_random_color();
@@ -282,4 +235,6 @@ div.querySelector(".show_state_checkbox").oninput = function() { state.data[stat
 </script>
 
 </html>
+
+
 

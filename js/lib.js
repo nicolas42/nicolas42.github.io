@@ -124,3 +124,14 @@ function save_file(filename, text) {
 function loose_json_parse(obj){
     return Function('"use strict";return (' + obj + ')')();
 }
+
+
+function copy_object(obj) {
+
+    let cp = {}; 
+    for (key in obj) {
+        cp[key] = obj[key];
+    }
+    return cp;
+}
+
