@@ -1,3 +1,18 @@
+Data-*
+--------------------------
+
+Arbitrary web data can be put into HTML elements as long as it's called "data-*", e.g.
+
+html_element.data-something = "{omg: 23, data: 34}"; 
+Element.getAttribute("data-something") 
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/data-*
+
+This means that the data that's needed to draw the element can be embedded in that same object.
+
+
+
+
 Mapping
 ------------------
 

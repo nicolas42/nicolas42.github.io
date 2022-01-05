@@ -1,5 +1,3 @@
-// jquery pffft
-// var $ = function(id) { return document.querySelector(id); }
 
 function load_object_from_url(parameters)
 {
@@ -119,12 +117,6 @@ function save_file(filename, text) {
     }
 }
 
-// alternative to eval
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
-function loose_json_parse(obj){
-    return Function('"use strict";return (' + obj + ')')();
-}
-
 
 function copy_object(obj) {
 
@@ -135,3 +127,8 @@ function copy_object(obj) {
     return cp;
 }
 
+// alternative to eval
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+function string_to_object(obj){
+    return Function('"use strict";return (' + obj + ')')();
+}
