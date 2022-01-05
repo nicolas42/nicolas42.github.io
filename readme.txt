@@ -1,3 +1,30 @@
+VS code
+------------
+
+Make ctrl+tab work properly
+[
+    // ...
+    {
+        "key": "ctrl+tab",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "workbench.action.previousEditor"
+    }
+]
+
+
+
+Reload html page every second
+<meta http-equiv="refresh" content="1">
+
+
+Put CSS file in a webpage
+-------------
+<link rel="stylesheet" href="styles.css">
+
+
 Github Markdown
 ----------------------
 
