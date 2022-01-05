@@ -12,7 +12,7 @@
 [css](css) | 
 [cut_down_version](cut_down_version) | 
 [deco1400](deco1400) | 
-[events](events) | 
+[event](event) | 
 [examples](examples) | 
 [f35](f35) | 
 [ganja](ganja) | 

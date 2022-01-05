@@ -2,9 +2,10 @@
 <!-- <SCRIPT type="text/javascript" src="lib.js"></SCRIPT> -->
 <STYLE>
 /* * { box-sizing: border-box; border: 1px solid grey; margin: 1px; padding: 1px; } */
+/* input[type=checkbox] { width: 20px; height: 20px; } */
 body, iframe, div { box-sizing: border-box; margin: 0; padding: 0; } 
 iframe { background-color: black; }
-* { font: 20pt Sans-serif; color: #333; }
+/* * { font: 20pt Sans-serif; color: #333; } */
 iframe { border: 0; }
 div#content { display: flex; flex-direction: row; flex-wrap: wrap; }
 </STYLE>
@@ -12,9 +13,9 @@ div#content { display: flex; flex-direction: row; flex-wrap: wrap; }
 <BODY>
 <DIV id="menu">
     <LABEL for="autoplay">autoplay</LABEL>
-    <INPUT type="checkbox" id="autoplay" style="width: 20px; height: 20px; ">
+    <INPUT type="checkbox" id="autoplay">  
     <LABEL for="divide_by">divide_by </LABEL>
-    <INPUT id="divide_by" type="text" value="3" maxlength="1" size="1">
+    <INPUT id="divide_by" type="text" value="1" maxlength="1" size="1">
     <BUTTON id="refresh" onclick="refresh()">refresh</BUTTON>
     <BUTTON id="prev" onclick="prev()">prev</BUTTON>
     <BUTTON id="next" onclick="next()">next</BUTTON>
