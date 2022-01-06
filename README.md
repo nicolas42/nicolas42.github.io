@@ -16,7 +16,6 @@
 [chaos](chaos) | 
 [event](event) | 
 [examples](examples) | 
-<!-- [f35](f35) |  -->
 [ganja](ganja) | 
 [js](js) | 
 [resize](resize) | 

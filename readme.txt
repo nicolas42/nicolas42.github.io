@@ -1,3 +1,4 @@
+
 macos take screenshtos as jpgs
 --------------------------------
 defaults write com.apple.screencapture type jpg;killall SystemUIServer

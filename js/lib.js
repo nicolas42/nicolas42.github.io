@@ -11,24 +11,19 @@ function load_object_from_url(parameters)
 
 function save_object_to_url(obj)
 {
-    var str = "?"
+    let str = "?"
     Object.keys(obj).forEach(function(key,index) {
-        // key: the name of the object key
-        // index: the ordinal position of the key within the object 
         str = str + key +"="+ (obj[key]).toString() +"&";
     });
-
-    window.history.replaceState(
-        "object or string", "Title", str // "?x=" + p.x + "&y=" + p.y + "&zoom=" + p.zoom + "&max_iterations=" + p.max_iterations
-    );
+    str = str.slice(0,-1);
+    window.history.replaceState( "object or string", "Title", str );
 }
 
-// make element tree
 function elt(type, ...children) {
-    // from eloquent javascript
+    // example:
     // var tree = elt( "div", elt( "button", "toggle fullscreen") );
     // document.body.appendChild( tree );
-
+    // source: eloquentjavascript
     let node = document.createElement(type);
     for (let child of children) {
         if (typeof child != "string") node.appendChild(child);
@@ -49,13 +44,13 @@ function show_scrollbars() {
 
 
 function toggle_content_editable(){
-    // html element
+    // document.documentElement is the html element?
     if ( document.documentElement.contentEditable === 'true' ) 
     {
         document.documentElement.contentEditable = 'false'; 
     } 
     else {
-l    }
+    }
 }
 
 
@@ -132,3 +127,8 @@ function copy_object(obj) {
 function string_to_object(obj){
     return Function('"use strict";return (' + obj + ')')();
 }
+
+
+// const obj = {name: "John", age: 30, city: "New York"};
+// const myJSON = JSON.stringify(obj);
+// const obj = JSON.parse('{"name":"John", "age":30, "city":"New York"}');
