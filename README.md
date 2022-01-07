@@ -8,9 +8,9 @@
 [lets-get-classy](lets-get-classy) | 
 [mandelbrot](mandelbrot) | 
 [lots of mandelbrot](mandelbrot/lots.html) | 
-[mapping](mapping) | 
+[map](map) | 
 [deco1400](deco1400) | 
-[youtube](youtube)
+[youtube](youtube) |
 [art](art) | 
 [calculator](calculator) | 
 [chaos](chaos) | 

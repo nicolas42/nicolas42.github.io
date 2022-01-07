@@ -1,13 +1,14 @@
+To Do 
+--------------------
+change youtube into stumbleupon - put urls in a separate file 
+
+
 
 macos take screenshtos as jpgs
 --------------------------------
 defaults write com.apple.screencapture type jpg;killall SystemUIServer
 
 
-Website To Do
----------------------
-
-Take screenshots of the cool demos and make them the links.  Put them on the front page.
 
 
 Data-*
