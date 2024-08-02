@@ -1,7 +1,5 @@
 # nicolas42.github.io
 
-# nicolas42.github.io
-
 [spiral](spiral) | [cellular_automaton](cellular_automaton) | [conway](conway) | [katex](katex) | [katex_editor](katex_editor) | [lets-get-classy](lets-get-classy) | [mandelbrot](mandelbrot) | [lots of mandelbrot](mandelbrot/lots.html) | [map](map) | [deco1400](deco1400) | [youtube](youtube) |  [art](art) | [calculator](calculator) | [chaos](chaos) | [event](event) | [examples](examples) | [ganja](ganja) | [js](js) | [resize](resize) | [s3](s3) | [touch-swipe-detection](touch-swipe-detection) | 
 
 ![alt](images/fractal.jpg)
