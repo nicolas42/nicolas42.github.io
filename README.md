@@ -1,5 +1,3 @@
-# nicolas42.github.io
-
 [spiral](spiral) 
 [cellular_automaton](cellular_automaton) 
 [conway](conway) 
