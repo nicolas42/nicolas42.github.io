@@ -1,60 +1,31 @@
 <style>
-    * {
-        box-sizing: border-box;
-        padding: 0;
-        margin: 0;
-    }
-
-    * {
-        font-size: 20px;
-        line-height: 2;
-        font-family: Helvetica, Arial, sans-serif;
-        letter-spacing: 0.01rem;
-        font-weight: 300;
-        color: #333;
-
-        background-color: #ffff;
-    }
-
-    body {
-        margin: 0 auto;
-        max-width: 800px;
-    }
-
-    /*
-    div { background-color: #fff; padding: 10px;}
+/*
+  * { border: solid 1px grey; }
 */
-
-    video {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    textarea {
-        width: 100%;
-        padding-left: 10px;
-    }
-
-    h1 {
-        font-size: 40px;
-        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-        background-color: #ddd
-    }
+  * { font-family: Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.25; letter-spacing: 0.01rem; }
+  body { margin: 0 auto; max-width: 1000px; min-height: 1000px; } 
+  textarea { width: 100%; height: 50%; padding: 10px; }
+  textarea, p, pre { font-size: 20px; } 
+  
 </style>
-<h1>Calculamalator</h1>
+
+<body>
+<h1>Calculator</h1>
 <div>
     <textarea autofocus></textarea>
-    <p></p>
-    <pre>
+    <p id="result"></p>
+
+<pre>
+This is basically just a javascript interpreter with an imported math library.  
+It uses eval() so don't expect great error reporting
 
 Available functions 
 abs, acos, acosh, asin, asinh, atan, atanh, atan2, ceil, cbrt, expm1, clz32, cos, cosh, exp,
 floor, fround, hypot, imul, log, log1p, log2, log10, max, min, pow, random, round, sign, sin, sinh, sqrt, tan,
 tanh, trunc, E, LN10, LN2, LOG10E, LOG2E, PI, SQRT1_2, SQRT2
-</pre>
 
-    <pre style="font-family: monospace; line-height: 1; padding: 50px;">
 // Example
+'comment'
 "comment"
 23423
 x=2
@@ -64,35 +35,37 @@ a={x:2,y:3,z:0}
 a.z = sqrt(a.x * a.y)
 a.z.toString().slice(0,5)
 JSON.stringify(a,null,4)
-</pre>
-    <pre>
-This is basically just a javascript interpreter with an imported math library.  
-It uses eval() so don't expect great error reporting
 
-Copyright 2020 nick sanchez productions
+f = (a, b) => a * b;
+f(2,3)
+
+f = (x) => { return x**2; }
+g=(x)=>x^3+x+1;
+f(2)
+g(1)
+
+
 </pre>
+
 </div>
 
 <script>
 
-        /* import Math */ (function () { Object.getOwnPropertyNames(Math).forEach(function (a) { eval(a + "=" + "Math." + a + "\t") }); })();
+  /* import Math */
+  (function () { Object.getOwnPropertyNames(Math).forEach(function (a) { eval(a + "=" + "Math." + a + "\t") }); })();
 
-    window.addEventListener("keyup", event => {
+  window.addEventListener("keyup", event => {
 
-        let textarea, p, result, input;
+      let textarea, p, result, input;
 
-        textarea = document.querySelector('textarea');
-        p = document.querySelector('p');
+      textarea = document.querySelector('textarea');
+      p = document.querySelector('p#result');
 
-        input = textarea.value.replace(/\^/g, "**")
-        result = eval(input);
-        p.innerHTML = "= " + result.toString();
+      input = textarea.value.replace(/\^/g, "**")
+      result = eval(input);
+      p.innerHTML = "= " + result.toString();
 
-    });
+  });
 
 </script>
-<script src='autosize.js'></script>
-<script>
-    // Put this at the end of the document (after the textarea) to autosize the element found by the query selector
-    autosize(document.querySelector('textarea'));
-</script>
+</body>
